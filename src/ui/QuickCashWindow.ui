@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>QuickCashWindow</class>
+ <widget class="QWidget" name="QuickCashWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>835</width>
+    <height>477</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>835</width>
+    <height>477</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>835</width>
+    <height>477</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Szybka wypłata gotówki</string>
+  </property>
+  <widget class="QLabel" name="MainLabel">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>5</y>
+     <width>861</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>36</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Szybka wypłata</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="FirstQuickCashButton">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>130</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>50 PLN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="SecondQuickCashButton">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>130</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>100 PLN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ThirdQuickCashButton">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>230</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>200 PLN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="FourthQuickCashButton">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>230</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>500 PLN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="FifthQuickCashButton">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>330</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>1000 PLN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="SixthQuickCashButton">
+   <property name="geometry">
+    <rect>
+     <x>600</x>
+     <y>330</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>2000 PLN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BackButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>410</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Powrót</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

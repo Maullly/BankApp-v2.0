@@ -1,0 +1,12 @@
+Karol,Malinowski,29-01-2025,Wplata,95,100,00000001
+Karol,Malinowski,29-01-2025,Przelew - wys³ano,100,85,00000001
+Jan,Kowal,29-01-2025,Przelew - otrzymano,0,15,00000002
+Karol,Malinowski,29-01-2025,Wplata,85,665,00000001
+Adrian,Nowak,29-01-2025,Wplata,0,50,00000003
+Adrian,Nowak,29-01-2025,Wyplata,50,20,00000003
+Adrian,Nowak,29-01-2025,Przelew - wyslano,20,10,00000003
+Karol,Malinowski,29-01-2025,Przelew - otrzymano,665,675,00000001
+Adrian,Nowak,29-01-2025,Wplata,10,60,00000003
+Adrian,Nowak,29-01-2025,Szybka Wyplata,60,10,00000003
+Karol,Malinowski,22-03-2025,Wplata,0,10,00000001
+Karol,Malinowski,22-03-2025,Wyplata,10,5,00000001

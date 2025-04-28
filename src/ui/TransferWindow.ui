@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TransferWindow</class>
+ <widget class="QWidget" name="TransferWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>878</width>
+    <height>482</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>878</width>
+    <height>482</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>878</width>
+    <height>482</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Przelew</string>
+  </property>
+  <widget class="QLineEdit" name="TransferAmountEdit">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>268</y>
+     <width>451</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="AccountNumberEdit">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>175</y>
+     <width>451</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="MainLabel">
+   <property name="geometry">
+    <rect>
+     <x>-2</x>
+     <y>0</y>
+     <width>881</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>48</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Przelew</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="TransferButton">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>355</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Przelej</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="TransferAmountLabel">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>230</y>
+     <width>421</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Kwota przelewu</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BackButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>355</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wróć</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="AccountNumberLabel">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>130</y>
+     <width>421</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Numer konta do przelewu</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

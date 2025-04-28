@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1FFBF2CC-3F7E-4079-8615-097FEB430D4B}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>6.9.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>6.9.0_msvc2022_64</QtInstall>
+    <QtModules>core;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="./src/core/src/AdminPanel.cpp" />
+    <ClCompile Include="./src/core/src/BankomatLoggedIn.cpp" />
+    <ClCompile Include="./src/core/src/DepositBankomat.cpp" />
+    <ClCompile Include="./src/core/src/LoginBankomat.cpp" />
+    <ClCompile Include="./src/core/src/Osoba.cpp" />
+    <ClCompile Include="./src/core/src/PinChange.cpp" />
+    <ClCompile Include="./src/core/src/QuickCash.cpp" />
+    <ClCompile Include="./src/core/src/SignUpWindow.cpp" />
+    <ClCompile Include="./src/core/src/Transfer.cpp" />
+    <ClCompile Include="./src/core/src/Withdraw.cpp" />
+    <ClCompile Include="./src/core/src/WithdrawBankomat.cpp" />
+    <QtRcc Include="BankApp.qrc" />
+    <QtUic Include="./src/ui/AdminPanelWindow.ui" />
+    <QtUic Include="./src/ui/BalanceWindow.ui" />
+    <QtUic Include="./src/ui/BankMainWindow.ui" />
+    <QtMoc Include="./src/core/include/BankApp.h" />
+    <ClCompile Include="./src/core/src/AccountBalance.cpp" />
+    <ClCompile Include="./src/core/src/BankApp.cpp" />
+    <ClCompile Include="./src/core/src/Deposit.cpp" />
+    <ClCompile Include="./src/core/src/LastTransactions.cpp" />
+    <ClCompile Include="./src/core/src/LoggedInWindow.cpp" />
+    <ClCompile Include="./src/core/src/LoginWindow.cpp" />
+    <ClCompile Include="./src/main.cpp" />
+    <QtUic Include="./src/ui/BankomatWindow.ui" />
+    <QtUic Include="./src/ui/ChangePinWindow.ui" />
+    <QtUic Include="./src/ui/DepositBankomatWindow.ui" />
+    <QtUic Include="./src/ui/DepositWindow.ui" />
+    <QtUic Include="./src/ui/LastTransactionsWindow.ui" />
+    <QtUic Include="./src/ui/LoggedInWindow.ui" />
+    <QtUic Include="./src/ui/LoginBankomat.ui" />
+    <QtUic Include="./src/ui/LoginWindow.ui" />
+    <QtUic Include="./src/ui/QuickCashWindow.ui" />
+    <QtUic Include="./src/ui/SignUpWindow.ui" />
+    <QtUic Include="./src/ui/TransferWindow.ui" />
+    <QtUic Include="./src/ui/WithdrawBankomatWindow.ui" />
+    <QtUic Include="./src/ui/WithdrawWindow.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="./src/core/include/AccountBalance.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="./src/core/include/Deposit.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="./src/core/include/LastTransactions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="./src/core/include/LoggedInWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="./src/core/include/LoginWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="./src/core/include/WithdrawBankomat.h" />
+    <QtMoc Include="./src/core/include/LoginBankomat.h" />
+    <QtMoc Include="./src/core/include/BankomatLoggedIn.h" />
+    <QtMoc Include="./src/core/include/DepositBankomat.h" />
+    <QtMoc Include="./src/core/include/AdminPanel.h" />
+    <ClInclude Include="./src/core/include/Osoba.h" />
+    <QtMoc Include="./src/core/include/Transfer.h" />
+    <QtMoc Include="./src/core/include/Withdraw.h" />
+    <QtMoc Include="./src/core/include/SignUpWindow.h" />
+    <QtMoc Include="./src/core/include/QuickCash.h" />
+    <QtMoc Include="./src/core/include/PinChange.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

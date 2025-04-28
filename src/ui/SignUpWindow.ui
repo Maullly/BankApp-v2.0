@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SignUpWindow</class>
+ <widget class="QWidget" name="SignUpWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>855</width>
+    <height>517</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>855</width>
+    <height>517</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>855</width>
+    <height>517</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Rejestracja</string>
+  </property>
+  <widget class="QLabel" name="NameLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>140</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Imię</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="PasswordEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>110</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Caladea</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="NameEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>190</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="PasswordLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>60</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Haslo</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="RegistrationLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>851</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>36</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Rejestracja</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="RegistrationButton">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>480</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Zarejestruj się</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="DateLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>220</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Data Urodzenia</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="CityLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>300</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Miasto</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="CityEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>350</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="StreetEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>430</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="StreetLabel">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>380</y>
+     <width>91</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Ulica</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="HouseNumberEdit">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>430</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="PinLabel">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>60</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Pin</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="EmailLabel">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>220</y>
+     <width>131</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Email</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="PinEdit">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>110</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="ZipCodeEdit">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>350</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="SurnameLabel">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>140</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Nazwisko</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="HouseNumberLabel">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>380</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Numer Domu</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="SurnameEdit">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>190</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="EmailEdit">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>270</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ZipCodeLabel">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>300</y>
+     <width>291</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Kod Pocztowy</string>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="dateEdit">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>270</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="calendarPopup">
+    <bool>true</bool>
+   </property>
+   <property name="date">
+    <date>
+     <year>2000</year>
+     <month>1</month>
+     <day>1</day>
+    </date>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BackButton">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>480</y>
+     <width>141</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wróć</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

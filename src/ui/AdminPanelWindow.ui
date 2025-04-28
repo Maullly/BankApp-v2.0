@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminWindow</class>
+ <widget class="QWidget" name="AdminWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>838</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>838</width>
+    <height>533</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>838</width>
+    <height>533</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Panel Administratora</string>
+  </property>
+  <widget class="QLabel" name="AdminLabel">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>5</y>
+     <width>841</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>36</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Panel Administratora</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="AdminWidget">
+   <property name="geometry">
+    <rect>
+     <x>-5</x>
+     <y>131</y>
+     <width>841</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <attribute name="horizontalHeaderDefaultSectionSize">
+    <number>139</number>
+   </attribute>
+   <column>
+    <property name="text">
+     <string>Numer Konta</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Numer Pin</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Imie</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Nazwisko</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Data Urodzenia</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>Adres Email</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
+  </widget>
+  <widget class="QPushButton" name="ChangePinAdminButton">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>470</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Zmień pin</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="DeleteAccAdminButton">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>470</y>
+     <width>121</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Usuń konto</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="LogOutAdminButton">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>470</y>
+     <width>151</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wyloguj sie</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ChangePinWindow</class>
+ <widget class="QWidget" name="ChangePinWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>878</width>
+    <height>482</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>878</width>
+    <height>482</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>878</width>
+    <height>482</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Zmiana pinu</string>
+  </property>
+  <widget class="QLabel" name="MainLabel">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>-5</y>
+     <width>861</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>48</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Zmiana pinu</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="NewPinLabel">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>125</y>
+     <width>421</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Nowy pin</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ConfirmPinLabel">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>225</y>
+     <width>421</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Potwierdź pin</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ChangePinButton">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>350</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Zmień</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BackButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>350</y>
+     <width>170</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wróć</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="NewPinEdit">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>170</y>
+     <width>451</width>
+     <height>41</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="ConfirmPinEdit">
+   <property name="geometry">
+    <rect>
+     <x>220</x>
+     <y>263</y>
+     <width>451</width>
+     <height>41</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WithdrawWindow</class>
+ <widget class="QWidget" name="WithdrawWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>878</width>
+    <height>533</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>878</width>
+    <height>533</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>878</width>
+    <height>533</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Wypłata środków</string>
+  </property>
+  <widget class="QLabel" name="WithdrawLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>871</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>36</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wypłać</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignmentFlag::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="AmountLabel">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>140</y>
+     <width>451</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Kwota</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="WithdrawEdit">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>190</y>
+     <width>451</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>24</pointsize>
+    </font>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="WithdrawButton">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>340</y>
+     <width>150</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wypłać</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BackButton">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>340</y>
+     <width>150</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>22</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Wróć</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

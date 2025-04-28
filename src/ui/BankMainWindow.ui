@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>BankMainWindow</class>
+ <widget class="QMainWindow" name="BankMainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>797</width>
+    <height>448</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>797</width>
+    <height>448</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>797</width>
+    <height>448</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Bank</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="LoginButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>100</y>
+      <width>211</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Zaloguj się do Banku</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="CreateAccButton">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>100</y>
+      <width>201</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Załóż nowe konto</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ExitButton">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>320</y>
+      <width>201</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Wyjdź</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="LoginBankomatButton">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>200</y>
+      <width>211</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Zaloguj się do bankomatu</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="AdminLoginButton">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>200</y>
+      <width>201</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>14</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Konto Administratora</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="BankApp.qrc"/>
+ </resources>
+ <connections/>
+</ui>
