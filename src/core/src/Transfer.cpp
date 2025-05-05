@@ -8,9 +8,9 @@
 
 TransferWindow::TransferWindow(QWidget* parent)
 {
-	ui.setupUi(this);
-	connect(ui.BackButton, &QPushButton::clicked, this, &TransferWindow::on_BackButton_clicked);
-	connect(ui.TransferButton, &QPushButton::clicked, this, &TransferWindow::on_TransferButton_clicked);
+    ui.setupUi(this);
+    connect(ui.BackButton, &QPushButton::clicked, this, &TransferWindow::on_BackButton_clicked);
+    connect(ui.TransferButton, &QPushButton::clicked, this, &TransferWindow::on_TransferButton_clicked);
 }
 
 TransferWindow::~TransferWindow()
@@ -19,7 +19,7 @@ TransferWindow::~TransferWindow()
 
 void TransferWindow::setLog(LoggedInWindow* mainWindow)
 {
-	main = mainWindow;
+    main = mainWindow;
 }
 
 void TransferWindow::on_TransferButton_clicked()
@@ -28,110 +28,121 @@ void TransferWindow::on_TransferButton_clicked()
     double amount = ui.TransferAmountEdit->text().toDouble();
 
     if (recipientAccount.isEmpty() || amount <= 0) {
-        QMessageBox::warning(this, "Blad", "Wprowadz poprawny numer konta i kwote!");
+        QMessageBox::warning(this, "B³¹d", "WprowadŸ poprawny numer konta i kwotê!");
         return;
     }
 
-    QFile file("./src/login.txt");
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        QMessageBox::critical(this, "Blad", "Nie mozna otworzyc pliku!");
+    // Pobierz dane nadawcy
+    QSqlQuery senderQuery;
+    senderQuery.prepare("SELECT * FROM users WHERE id = :id");
+    senderQuery.bindValue(":id", QString::fromStdString(accountNumber));
+    if (!senderQuery.exec() || !senderQuery.next()) {
+        QMessageBox::critical(this, "B³¹d", "Nie znaleziono Twojego konta!");
         return;
     }
 
-    QStringList lines;
-    QTextStream in(&file);
-
-    QStringList senderData;
-    QStringList recipientData;
-
-    double senderBalanceBefore = 0, senderBalanceAfter = 0;
-    double recipientBalanceBefore = 0, recipientBalanceAfter = 0;
-
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList parts = line.split(",");
-
-        if (parts.size() >= 11) {
-            if (parts[0].toStdString() == accountNumber) { // Nadawca przelewu
-                senderData = parts;
-                senderBalanceBefore = parts[10].toDouble();
-                if (senderBalanceBefore < amount) {
-                    QMessageBox::warning(this, "Blad", "Niewystarczajace srodki na koncie!");
-                    file.close();
-                    return;
-                }
-                senderBalanceAfter = senderBalanceBefore - amount;
-                senderData[10] = QString::number(senderBalanceAfter, 'f', 2);
-                line = senderData.join(",");
-            }
-            else if (parts[0] == recipientAccount) { // Odbiorca przelewu
-                recipientData = parts;
-                recipientBalanceBefore = parts[10].toDouble();
-                recipientBalanceAfter = recipientBalanceBefore + amount;
-                recipientData[10] = QString::number(recipientBalanceAfter, 'f', 2);
-                line = recipientData.join(",");
-            }
-        }
-
-        lines.append(line);
-    }
-    file.close();
-
-    if (senderData.isEmpty()) {
-        QMessageBox::critical(this, "Blad", "Twoje konto nie zostalo znalezione!");
+    double senderBalanceBefore = senderQuery.value("balance").toDouble();
+    if (senderBalanceBefore < amount) {
+        QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki!");
         return;
     }
 
-    if (recipientData.isEmpty()) {
-        QMessageBox::critical(this, "Blad", "Konto odbiorcy nie istnieje!");
+    double senderBalanceAfter = senderBalanceBefore - amount;
+
+    // Pobierz dane odbiorcy
+    QSqlQuery recipientQuery;
+    recipientQuery.prepare("SELECT * FROM users WHERE id = :id");
+    recipientQuery.bindValue(":id", recipientAccount);
+    if (!recipientQuery.exec() || !recipientQuery.next()) {
+        QMessageBox::critical(this, "B³¹d", "Konto odbiorcy nie istnieje!");
         return;
     }
 
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        QMessageBox::critical(this, "Blad", "Nie mozna zapisac do pliku!");
+    double recipientBalanceBefore = recipientQuery.value("balance").toDouble();
+    double recipientBalanceAfter = recipientBalanceBefore + amount;
+
+    // Rozpocznij transakcjê SQL
+    QSqlDatabase::database().transaction();
+
+    // Zaktualizuj saldo nadawcy
+    QSqlQuery updateSender;
+    updateSender.prepare("UPDATE users SET balance = :balance WHERE id = :id");
+    updateSender.bindValue(":balance", senderBalanceAfter);
+    updateSender.bindValue(":id", QString::fromStdString(accountNumber));
+    if (!updateSender.exec()) {
+        QSqlDatabase::database().rollback();
+        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda nadawcy!");
         return;
     }
 
-    QTextStream out(&file);
-    for (const QString& line : lines) {
-        out << line << "\n";
+    // Zaktualizuj saldo odbiorcy
+    QSqlQuery updateRecipient;
+    updateRecipient.prepare("UPDATE users SET balance = :balance WHERE id = :id");
+    updateRecipient.bindValue(":balance", recipientBalanceAfter);
+    updateRecipient.bindValue(":id", recipientAccount);
+    if (!updateRecipient.exec()) {
+        QSqlDatabase::database().rollback();
+        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda odbiorcy!");
+        return;
     }
-    file.close();
 
-    // Konwersja danych nadawcy na obiekt Osoba
-    Osoba sender(senderData[0].toStdString(), senderData[1].toStdString(), senderData[2].toStdString(),
-        senderData[3].toStdString(), senderData[4].toStdString(), senderData[5].toStdString(),
-        senderData[6].toStdString(), senderData[7].toStdString(), senderData[8].toStdString(),
-        senderData[9].toStdString(), senderData[10].toDouble());
+    // ZatwierdŸ transakcjê
+    QSqlDatabase::database().commit();
+
+    // Obiekt Osoba – nadawca
+    Osoba sender(
+        senderQuery.value("id").toString().toStdString(),
+        std::to_string(senderQuery.value("pin").toInt()),
+        senderQuery.value("password").toString().toStdString(),
+        senderQuery.value("first_name").toString().toStdString(),
+        senderQuery.value("last_name").toString().toStdString(),
+        senderQuery.value("birth_date").toString().toStdString(),
+        senderQuery.value("email").toString().toStdString(),
+        senderQuery.value("city").toString().toStdString(),
+        senderQuery.value("postal_code").toString().toStdString(),
+        senderQuery.value("street").toString().toStdString(),
+        senderQuery.value("house_number").toString().toStdString(),
+        senderBalanceAfter
+    );
     sender.dodajTransakcje("Przelew - wyslano", senderBalanceBefore, senderBalanceAfter);
 
-    // Konwersja danych odbiorcy na obiekt Osoba
-    Osoba recipient(recipientData[0].toStdString(), recipientData[1].toStdString(), recipientData[2].toStdString(),
-        recipientData[3].toStdString(), recipientData[4].toStdString(), recipientData[5].toStdString(),
-        recipientData[6].toStdString(), recipientData[7].toStdString(), recipientData[8].toStdString(),
-        recipientData[9].toStdString(), recipientData[10].toDouble());
+    // Obiekt Osoba – odbiorca
+    Osoba recipient(
+        recipientQuery.value("id").toString().toStdString(),
+        std::to_string(recipientQuery.value("pin").toInt()),
+        recipientQuery.value("password").toString().toStdString(),
+        recipientQuery.value("first_name").toString().toStdString(),
+        recipientQuery.value("last_name").toString().toStdString(),
+        recipientQuery.value("birth_date").toString().toStdString(),
+        recipientQuery.value("email").toString().toStdString(),
+        recipientQuery.value("city").toString().toStdString(),
+        recipientQuery.value("postal_code").toString().toStdString(),
+        recipientQuery.value("street").toString().toStdString(),
+        recipientQuery.value("house_number").toString().toStdString(),
+        recipientBalanceAfter
+    );
     recipient.dodajTransakcje("Przelew - otrzymano", recipientBalanceBefore, recipientBalanceAfter);
 
-    QMessageBox::information(this, "Sukces", "Przelew wykonany pomyslnie!");
+    QMessageBox::information(this, "Sukces", "Przelew wykonany pomyœlnie!");
 
-    // Aktualizacja salda w g³ównym oknie
     if (main) {
         main->refreshBalance();
     }
 }
 
 
+
 void TransferWindow::on_BackButton_clicked()
 {
-	qDebug() << "Back button clicked";
-	if (main) {
-		main->show();
-		close();
-	}
-	else
-	{
-		QMessageBox::critical(this, "Error", "Main window not set");
-	}
+    qDebug() << "Back button clicked";
+    if (main) {
+        main->show();
+        close();
+    }
+    else
+    {
+        QMessageBox::critical(this, "Error", "Main window not set");
+    }
 }
 
 void TransferWindow::setAccountNumber(std::string accNum)

@@ -72,38 +72,37 @@ bool Osoba::dodajDoBazy() {
     return true;
 }
 
-void Osoba::zapiszDoPliku() const {
-    std::ofstream plik("./src/login.txt", std::ios::app);
-    if (plik.is_open()) {
-        plik << numerKonta << "," << pin << "," << imie << "," << nazwisko << ","
-            << dataUrodzenia << "," << email << "," << miasto << ","
-            << kodPocztowy << "," << ulica << "," << numerDomu << "," << stanKonta << "\n";
-        plik.close();
-    }
-    else {
-        std::cerr << "Nie można otworzyć pliku do zapisu!\n";
-    }
-}
 void Osoba::dodajTransakcje(const std::string& opis, double stanPrzed, double stanPo) {
-    std::ofstream file("./src/transactions.txt", std::ios::app); // Otwieramy plik w trybie dopisywania
-    if (!file) {
-        std::cerr << "Nie można otworzyć pliku transactions.txt do zapisu!" << std::endl;
+    QSqlDatabase db = QSqlDatabase::database();
+    if (!db.isOpen()) {
+        qDebug() << "Baza danych nie jest otwarta!";
         return;
     }
 
-    // Pobranie aktualnej daty
-    auto t = std::time(nullptr);
-    auto tm = *std::localtime(&t);
-    std::ostringstream oss;
-    oss << std::put_time(&tm, "%d-%m-%Y");  // Format daty: DD-MM-YYYY
-    std::string currentDate = oss.str();
+    QSqlQuery insert;
+    QString currentDate = QDate::currentDate().toString("dd-MM-yyyy");
 
-    // Zapisujemy dane do pliku w nowym formacie
-    file << imie << "," << nazwisko << "," << currentDate << ","
-        << opis << "," << stanPrzed << "," << stanPo << "," << numerKonta << "\n";
+    insert.prepare(R"(
+        INSERT INTO transactions (imie, nazwisko, data, rodzaj, balans_przed, balans_po, numer_konta)
+        VALUES (:imie, :nazwisko, :data, :rodzaj, :balans_przed, :balans_po, :numer_konta)
+    )");
 
-    file.close();
+    insert.bindValue(":imie", QString::fromStdString(imie));
+    insert.bindValue(":nazwisko", QString::fromStdString(nazwisko));
+    insert.bindValue(":data", currentDate);
+    insert.bindValue(":rodzaj", QString::fromStdString(opis));
+    insert.bindValue(":balans_przed", stanPrzed);
+    insert.bindValue(":balans_po", stanPo);
+    insert.bindValue(":numer_konta", QString::fromStdString(numerKonta));
+
+    if (!insert.exec()) {
+        qDebug() << "Błąd zapisu transakcji:" << insert.lastError().text();
+    }
+    else {
+        qDebug() << "Transakcja zapisana pomyślnie.";
+    }
 }
+
 
 bool Osoba::sprawdzLogowanie(const std::string& konto, const std::string& credential)
 {
