@@ -4,77 +4,81 @@
 #include <QtSql/QSqlDatabase>
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlError>
-void checkAndCreateFile(const std::string& filename) {
-    std::ifstream file(filename);
-    if (!file) {  // Jeœli plik nie istnieje, utwórz go
-        std::ofstream newFile(filename);
-        newFile.close();
-    }
-}
+#include <QtSql/QSqlDriver>
+#include <QDebug>
+#include <QCoreApplication>
+
 void createDatabase() {
+    qDebug() << "Dostêpne sterowniki SQL:" << QSqlDatabase::drivers();
+
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("bank.db");
+    if (!db.isValid()) {
+        qDebug() << "Sterownik QSQLITE nie jest dostêpny!";
+        return;
+    }
+
+    db.setDatabaseName("./src/bank.db");
     if (!db.open()) {
         qDebug() << "B³¹d otwierania bazy danych:" << db.lastError().text();
         return;
-	}
+    }
     else {
         qDebug() << "Baza danych otwarta.";
     }
-    // Utworzenie tabeli uzytkownikow
+
+    // Tabela u¿ytkowników
     QSqlQuery query;
-    QString createTableQuery =
-        "CREATE TABLE IF NOT EXISTS users ("
-        "id TEXT PRIMARY KEY CHECK (LENGTH(id) = 8), "  // ID jako tekst (np. "00000001")
-		"password TEXT NOT NULL, "
-        "pin INTEGER NOT NULL CHECK (pin BETWEEN 1000 AND 9999), "
-        "first_name TEXT NOT NULL, "
-        "last_name TEXT NOT NULL, "
-        "birth_date TEXT NOT NULL, "
-        "email TEXT UNIQUE NOT NULL, "
-        "city TEXT NOT NULL, "
-        "postal_code TEXT NOT NULL, "
-        "street TEXT NOT NULL, "
-        "house_number TEXT NOT NULL, "
-        "balance REAL NOT NULL DEFAULT 0 CHECK (balance >= 0) "
-        ");";
-
-    if (!query.exec(createTableQuery)) {
-        qDebug() << "B³¹d tworzenia tabeli:" << query.lastError().text();
-    }
-    else {
-        qDebug() << "Tabela utworzona lub ju¿ istnieje.";
-    }
-
-    QSqlQuery transactions; // do poprawy 
-    QString createTable = R"(
-        CREATE TABLE IF NOT EXISTS transactions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            imie TEXT NOT NULL,
-            nazwisko TEXT NOT NULL,
-            data TEXT NOT NULL,
-            rodzaj TEXT NOT NULL,
-            balans_przed REAL NOT NULL,
-            balans_po REAL NOT NULL,
-            numer_konta INTEGER NOT NULL
+    QString createUsersQuery = R"(
+        CREATE TABLE IF NOT EXISTS users (
+            id TEXT PRIMARY KEY CHECK (LENGTH(id) = 8),
+            password TEXT NOT NULL,
+            pin INTEGER NOT NULL CHECK (pin BETWEEN 1000 AND 9999),
+            first_name TEXT NOT NULL,
+            last_name TEXT NOT NULL,
+            birth_date TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            city TEXT NOT NULL,
+            postal_code TEXT NOT NULL,
+            street TEXT NOT NULL,
+            house_number TEXT NOT NULL,
+            balance REAL NOT NULL DEFAULT 0 CHECK (balance >= 0)
         );
     )";
 
-    if (!transactions.exec(createTable)) {
-        qDebug() << "B³¹d tworzenia tabeli transactions: " << query.lastError().text();
-	}
+    if (!query.exec(createUsersQuery)) {
+        qDebug() << "B³¹d tworzenia tabeli users:" << query.lastError().text();
+    }
+    else {
+        qDebug() << "Tabela users utworzona lub ju¿ istnieje.";
+    }
+
+    // Tabela transakcji
+    QSqlQuery transactions;
+    QString createTransactionsQuery = R"(
+        CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT NOT NULL,
+            transaction_date TEXT NOT NULL,
+            transaction_type TEXT NOT NULL,
+            balance_before REAL NOT NULL,
+            balance_after REAL NOT NULL,
+            account_number TEXT NOT NULL,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        );
+    )";
+
+    if (!transactions.exec(createTransactionsQuery)) {
+        qDebug() << "B³¹d tworzenia tabeli transactions:" << transactions.lastError().text();
+    }
     else {
         qDebug() << "Tabela transactions utworzona lub ju¿ istnieje.";
     }
 }
-int main(int argc, char *argv[])
-{
-    // Sprawdzenie i utworzenie plików, jeœli nie istniej¹
-    checkAndCreateFile("./src/login.txt");
-    checkAndCreateFile("./src/transactions.txt");
+
+int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
-	createDatabase();
     BankApp w;
+    createDatabase();
     w.show();
     return a.exec();
 }

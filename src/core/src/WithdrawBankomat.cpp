@@ -71,80 +71,56 @@ void WithdrawBankomatWindow::onWithdrawClicked()
 {
     double amount = ui.WithdrawEdit->text().toDouble();
     if (amount <= 0) {
-        QMessageBox::warning(this, "Blad", "Kwota musi byc wieksza od zera!");
+        QMessageBox::warning(this, "B³¹d", "Kwota musi byæ wiêksza od zera!");
         return;
     }
 
-    QFile file("./src/login.txt");
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        QMessageBox::critical(this, "Blad", "Nie mozna otworzyc pliku!");
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM users WHERE id = :id");
+    selectQuery.bindValue(":id", QString::fromStdString(accountNumber));
+
+    if (!selectQuery.exec() || !selectQuery.next()) {
+        QMessageBox::critical(this, "B³¹d", "Nie znaleziono konta!");
         return;
     }
 
-    QStringList lines;
-    QTextStream in(&file);
-    double balanceBefore = 0;
-    double balanceAfter = 0;
-    bool found = false;
-
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList parts = line.split(",");
-        if (parts.size() >= 11 && parts[0] == accountNumber) {
-            balanceBefore = parts[10].toDouble();
-            if (balanceBefore < amount) {
-                QMessageBox::warning(this, "Blad", "Niewystarczajace srodki na koncie!");
-                file.close();
-                return;
-            }
-            balanceAfter = balanceBefore - amount;
-            parts[10] = QString::number(balanceAfter, 'f', 2);
-            line = parts.join(",");
-            found = true;
-        }
-        lines.append(line);
-    }
-    file.close();
-
-    if (!found) {
-        QMessageBox::critical(this, "Blad", "Nie udalo sie znalezc konta!");
+    double balanceBefore = selectQuery.value("balance").toDouble();
+    if (balanceBefore < amount) {
+        QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki na koncie!");
         return;
     }
 
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        QMessageBox::critical(this, "Blad", "Nie mozna zapisac do pliku!");
+    double balanceAfter = balanceBefore - amount;
+
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE users SET balance = :balance WHERE id = :id");
+    updateQuery.bindValue(":balance", balanceAfter);
+    updateQuery.bindValue(":id", QString::fromStdString(accountNumber));
+    if (!updateQuery.exec()) {
+        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda!");
         return;
     }
 
-    QTextStream out(&file);
-    for (const QString& line : lines) {
-        out << line << "\n";
-    }
-    file.close();
+    // Utwórz obiekt Osoba na podstawie danych z bazy
+    Osoba osoba(
+        selectQuery.value("id").toString().toStdString(),
+        std::to_string(selectQuery.value("pin").toInt()),
+        selectQuery.value("password").toString().toStdString(),
+        selectQuery.value("first_name").toString().toStdString(),
+        selectQuery.value("last_name").toString().toStdString(),
+        selectQuery.value("birth_date").toString().toStdString(),
+        selectQuery.value("email").toString().toStdString(),
+        selectQuery.value("city").toString().toStdString(),
+        selectQuery.value("postal_code").toString().toStdString(),
+        selectQuery.value("street").toString().toStdString(),
+        selectQuery.value("house_number").toString().toStdString(),
+        balanceAfter
+    );
 
-    QStringList userData;
-    for (const QString& line : lines) {
-        QStringList parts = line.split(",");
-        if (parts.size() >= 11 && parts[0] == accountNumber) {
-            userData = parts;
-            break;
-        }
-    }
-
-    if (userData.isEmpty()) {
-        QMessageBox::critical(this, "Blad", "Nie udalo sie znalezc danych uzytkownika!");
-        return;
-    }
-
-    // Konwersja QString na std::string
-    Osoba osoba(userData[0].toStdString(), userData[1].toStdString(), userData[2].toStdString(),
-        userData[3].toStdString(), userData[4].toStdString(), userData[5].toStdString(),
-        userData[6].toStdString(), userData[7].toStdString(), userData[8].toStdString(),
-        userData[9].toStdString(), userData[10].toDouble());
-
-    osoba.dodajTransakcje("Wyplata", balanceBefore, balanceAfter);
-    QMessageBox::information(this, "Sukces", "Wyplata zakoñczona sukcesem!");
+    osoba.dodajTransakcje("Wyp³ata", balanceBefore, balanceAfter);
+    QMessageBox::information(this, "Sukces", "Wyp³ata zakoñczona sukcesem!");
 }
+
 
 void WithdrawBankomatWindow::on_BackButton_clicked()
 {

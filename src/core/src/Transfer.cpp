@@ -28,7 +28,7 @@ void TransferWindow::on_TransferButton_clicked()
     double amount = ui.TransferAmountEdit->text().toDouble();
 
     if (recipientAccount.isEmpty() || amount <= 0) {
-        QMessageBox::warning(this, "B³¹d", "WprowadŸ poprawny numer konta i kwotê!");
+        QMessageBox::warning(this, "B³¹d", "Wprowadz poprawny numer i kwote!");
         return;
     }
 

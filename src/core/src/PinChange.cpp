@@ -34,82 +34,69 @@ void PinChangeWindow::on_BackButton_clicked()
 }
 
 void PinChangeWindow::on_ChangePinButton_clicked() {
-    // Pobierz wartoœci z pól NewPinEdit i ConfirmPinEdit
     QString newPin = ui.NewPinEdit->text();
     QString confirmPin = ui.ConfirmPinEdit->text();
 
-    // SprawdŸ, czy pola nie s¹ puste
     if (newPin.isEmpty() || confirmPin.isEmpty()) {
-        QMessageBox::warning(this, "Blad", "Wszystkie pola musza byc wypelnione.");
+        QMessageBox::warning(this, "B³¹d", "Wszystkie pola musz¹ byæ wype³nione.");
         return;
     }
 
-    // SprawdŸ, czy nowe PIN-y s¹ zgodne
     if (newPin != confirmPin) {
-        QMessageBox::warning(this, "Blad", "Podane PIN-y nie sa zgodne.");
+        QMessageBox::warning(this, "B³¹d", "Podane PIN-y nie s¹ zgodne.");
         return;
     }
 
-    // SprawdŸ d³ugoœæ PIN-u (np. musi mieæ 4 cyfry)
     if (newPin.length() != 4 || newPin.toStdString().find_first_not_of("0123456789") != std::string::npos) {
-        QMessageBox::warning(this, "Blad", "PIN musi sk³adaæ siê z 4 cyfr.");
+        QMessageBox::warning(this, "B³¹d", "PIN musi sk³adaæ siê z 4 cyfr.");
         return;
     }
 
-    QFile file("./src/login.txt");
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        QMessageBox::critical(this, "Blad", "Nie mozna otworzyc pliku!");
+    // Pobranie danych u¿ytkownika z bazy
+    QSqlQuery selectQuery;
+    selectQuery.prepare("SELECT * FROM users WHERE id = :id");
+    selectQuery.bindValue(":id", QString::fromStdString(accountNumber));
+
+    if (!selectQuery.exec() || !selectQuery.next()) {
+        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê znaleŸæ u¿ytkownika.");
         return;
     }
 
-    QStringList lines;
-    QTextStream in(&file);
-    QStringList userData;
+    // Aktualizacja PIN-u w bazie danych
+    QSqlQuery updateQuery;
+    updateQuery.prepare("UPDATE users SET pin = :pin WHERE id = :id");
+    updateQuery.bindValue(":pin", newPin.toInt());
+    updateQuery.bindValue(":id", QString::fromStdString(accountNumber));
 
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList parts = line.split(",");
-        if (parts.size() >= 11 && parts[0].toStdString() == accountNumber) {
-            parts[1] = newPin; // Aktualizacja PIN-u
-            line = parts.join(",");
-            userData = parts;
-        }
-        lines.append(line);
-    }
-    file.close();
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
-        QMessageBox::critical(this, "Blad", "Nie mozna zapisac do pliku!");
+    if (!updateQuery.exec()) {
+        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ PIN-u.");
         return;
     }
 
-    QTextStream out(&file);
-    for (const QString& line : lines) {
-        out << line << "\n";
-    }
-    file.close();
+    // Utworzenie obiektu Osoba z aktualnymi danymi
+    Osoba osoba(
+        selectQuery.value("id").toString().toStdString(),
+        newPin.toStdString(), // Ustawiamy nowy PIN
+        selectQuery.value("password").toString().toStdString(),
+        selectQuery.value("first_name").toString().toStdString(),
+        selectQuery.value("last_name").toString().toStdString(),
+        selectQuery.value("birth_date").toString().toStdString(),
+        selectQuery.value("email").toString().toStdString(),
+        selectQuery.value("city").toString().toStdString(),
+        selectQuery.value("postal_code").toString().toStdString(),
+        selectQuery.value("street").toString().toStdString(),
+        selectQuery.value("house_number").toString().toStdString(),
+        selectQuery.value("balance").toDouble()
+    );
 
-    if (userData.isEmpty()) {
-        QMessageBox::critical(this, "Blad", "Nie udalo sie znalezc danych uzytkownika!");
-        return;
-    }
-
-    // Konwersja QString na std::string i utworzenie obiektu Osoba
-    Osoba osoba(userData[0].toStdString(), userData[1].toStdString(), userData[2].toStdString(),
-        userData[3].toStdString(), userData[4].toStdString(), userData[5].toStdString(),
-        userData[6].toStdString(), userData[7].toStdString(), userData[8].toStdString(),
-        userData[9].toStdString(), userData[10].toDouble());
-
-    // Zapisanie zmienionego PIN-u
     osoba.setPin(newPin.toStdString());
 
-    // Wyœwietl komunikat o sukcesie
-    QMessageBox::information(this, "Sukces", "PIN zostal pomyslnie zmieniony.");
+    QMessageBox::information(this, "Sukces", "PIN zosta³ pomyœlnie zmieniony.");
 
-    // Wyczyœæ pola tekstowe
     ui.NewPinEdit->clear();
     ui.ConfirmPinEdit->clear();
 }
+
 void PinChangeWindow::setAccountNumber(std::string accNum)
 {
     accountNumber = accNum;
