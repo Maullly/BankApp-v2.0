@@ -32,7 +32,7 @@ void createDatabase() {
         CREATE TABLE IF NOT EXISTS users (
             id TEXT PRIMARY KEY CHECK (LENGTH(id) = 8),
             password TEXT NOT NULL,
-            pin INTEGER NOT NULL CHECK (pin BETWEEN 1000 AND 9999),
+            pin TEXT NOT NULL,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             birth_date TEXT NOT NULL,

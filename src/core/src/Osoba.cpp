@@ -5,15 +5,17 @@
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>
+#include <QRegularExpression> 
 static std::string Plik = "../login.txt";
-Osoba::Osoba(const std::string& numerKonta, const std::string& pin, const std::string& password, const std::string& imie,
+Osoba::Osoba(const std::string& numerKonta, const std::string& password, const std::string& pin, const std::string& imie,
     const std::string& nazwisko, const std::string& dataUrodzenia, const std::string& email,
     const std::string& miasto, const std::string& kodPocztowy, const std::string& ulica,
     const std::string& numerDomu, double stanKonta)
-    : numerKonta(numerKonta), pin(pin), imie(imie), nazwisko(nazwisko),
+    : numerKonta(numerKonta), password(password), pin(pin), imie(imie), nazwisko(nazwisko),
     dataUrodzenia(dataUrodzenia), email(email), miasto(miasto),
     kodPocztowy(kodPocztowy), ulica(ulica), numerDomu(numerDomu), stanKonta(stanKonta) {
 }
+
 
 
 
@@ -46,21 +48,21 @@ bool Osoba::wyplacSrodki(double kwota) {
 bool Osoba::dodajDoBazy() {
     QSqlQuery query;
     query.prepare(R"(
-        INSERT INTO users (numerKonta, pin, password, imie, nazwisko, dataUrodzenia, email, miasto, kodPocztowy, ulica, numerDomu, balance)
-        VALUES (:numerKonta, :pin, :imie, :nazwisko, :dataUrodzenia, :email, :miasto, :kodPocztowy, :ulica, :numerDomu, :balance);
+        INSERT INTO users (id, password, pin, first_name, last_name, birth_date, email, city, postal_code, street, house_number, balance)
+        VALUES (:id, :password, :pin, :first_name, :last_name, :birth_date, :email, :city, :postal_code, :street, :house_number, :balance);
     )");
 
-    query.bindValue(":numerKonta", QString::fromStdString(numerKonta));
-    query.bindValue(":pin", QString::fromStdString(pin));
+    query.bindValue(":id", QString::fromStdString(numerKonta));
     query.bindValue(":password", QString::fromStdString(password));
-    query.bindValue(":imie", QString::fromStdString(imie));
-    query.bindValue(":nazwisko", QString::fromStdString(nazwisko));
-    query.bindValue(":dataUrodzenia", QString::fromStdString(dataUrodzenia));
+    query.bindValue(":pin", QString::fromStdString(pin));
+    query.bindValue(":first_name", QString::fromStdString(imie));
+    query.bindValue(":last_name", QString::fromStdString(nazwisko));
+    query.bindValue(":birth_date", QString::fromStdString(dataUrodzenia));
     query.bindValue(":email", QString::fromStdString(email));
-    query.bindValue(":miasto", QString::fromStdString(miasto));
-    query.bindValue(":kodPocztowy", QString::fromStdString(kodPocztowy));
-    query.bindValue(":ulica", QString::fromStdString(ulica));
-    query.bindValue(":numerDomu", QString::fromStdString(numerDomu));
+    query.bindValue(":city", QString::fromStdString(miasto));
+    query.bindValue(":postal_code", QString::fromStdString(kodPocztowy));
+    query.bindValue(":street", QString::fromStdString(ulica));
+    query.bindValue(":house_number", QString::fromStdString(numerDomu));
     query.bindValue(":balance", stanKonta);
 
     if (!query.exec()) {
@@ -71,6 +73,8 @@ bool Osoba::dodajDoBazy() {
     qDebug() << "Użytkownik dodany do bazy!";
     return true;
 }
+
+
 
 void Osoba::dodajTransakcje(const std::string& opis, double stanPrzed, double stanPo) {
     QSqlDatabase db = QSqlDatabase::database();
@@ -102,37 +106,41 @@ void Osoba::dodajTransakcje(const std::string& opis, double stanPrzed, double st
         qDebug() << "Transakcja zapisana pomyślnie.";
     }
 }
-
-
-bool Osoba::sprawdzLogowanie(const std::string& konto, const std::string& credential)
+bool Osoba::sprawdzHaslo(const std::string& konto, const std::string& password)
 {
-    QSqlDatabase db = QSqlDatabase::database();
-    if (!db.isOpen()) {
-        qDebug() << "Baza danych nie jest otwarta!";
-        return false;
-    }
-
-    // rozpoznaj PIN: dokładnie 4 cyfry
-    bool isPin = (credential.size() == 4 &&
-        std::all_of(credential.begin(), credential.end(), ::isdigit));
-
     QSqlQuery query;
-    query.prepare("SELECT pin, password FROM users WHERE id = :id");
+    query.prepare("SELECT password FROM users WHERE id = :id");
     query.bindValue(":id", QString::fromStdString(konto));
-    if (!query.exec() || !query.next()) {
-        qDebug() << "Błąd zapytania lub brak konta:" << query.lastError().text();
+
+    if (!query.exec()) {
+        qDebug() << "Błąd zapytania hasła: " << query.lastError().text();
         return false;
     }
 
-    QString pinZBazy = query.value(0).toString();
-    QString hasloZBazy = query.value(1).toString();
-    QString credQt = QString::fromStdString(credential);
+    if (query.next()) {
+        QString correctPassword = query.value("password").toString();
+        return password == correctPassword.toStdString();
+    }
 
-    // jeśli credential wygląda jak PIN → porównaj z pinZBazy, inaczej z hasloZBazy
-    if (isPin)
-        return (credQt == pinZBazy);
-    else
-        return (credQt == hasloZBazy);
+    return false;
+}
+bool Osoba::sprawdzPin(const std::string& konto, const std::string& pin)
+{
+    QSqlQuery query;
+    query.prepare("SELECT pin FROM users WHERE id = :id");
+    query.bindValue(":id", QString::fromStdString(konto));
+
+    if (!query.exec()) {
+        qDebug() << "Błąd zapytania PIN-u: " << query.lastError().text();
+        return false;
+    }
+
+    if (query.next()) {
+        QString correctPin = query.value("pin").toString();
+        return pin == correctPin.toStdString();
+    }
+
+    return false;
 }
 std::string Osoba::generujNoweId()
 {
@@ -142,16 +150,32 @@ std::string Osoba::generujNoweId()
         return "";
     }
 
-    QSqlQuery query;
-    query.prepare("SELECT numerKonta FROM users ORDER BY numerKonta DESC LIMIT 1;");
-    if (!query.exec() || !query.next()) {
-        qDebug() << "Błąd zapytania lub brak danych: " << query.lastError().text();
-        return "00000001"; // Jeśli brak kont, zwróć pierwsze
+    QSqlQuery query(db);
+    QString sql = "SELECT id FROM users ORDER BY CAST(id AS INTEGER) DESC LIMIT 1;";
+    if (!query.prepare(sql)) {
+        qDebug() << "Nie udało się przygotować zapytania:" << sql << query.lastError().text();
+        return "";
+    }
+
+    if (!query.exec()) {
+        qDebug() << "Błąd wykonania zapytania:" << sql << query.lastError().text();
+        return "";
+    }
+
+    if (!query.next()) {
+        qDebug() << "Brak danych w tabeli users – pierwsze konto.";
+        return "00000001";
     }
 
     QString lastId = query.value(0).toString();
-    int idNum = lastId.toInt();
+    bool ok;
+    int idNum = lastId.toInt(&ok);
+    if (!ok) {
+        qDebug() << "Nieprawidłowy format id:" << lastId;
+        return "";
+    }
+
     idNum += 1;
 
-    return QString("%1").arg(idNum, 8, 10, QChar('0')).toStdString(); // np. 00000001
+    return QString("%1").arg(idNum, 8, 10, QChar('0')).toStdString();
 }

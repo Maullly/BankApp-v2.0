@@ -70,14 +70,15 @@ void LoginBankomat::onClearClicked()
 void LoginBankomat::onLoginClicked()
 {
     QString login = ui.AccountEdit->text().trimmed();
-    QString credential = ui.PinEdit->text().trimmed(); 
+    QString credential = QString::fromStdString(enteredPin.toStdString());
+
 
     if (login.isEmpty() || credential.isEmpty()) {
         QMessageBox::warning(this, "B³¹d", "Wszystkie pola musz¹ byæ wype³nione!");
         return;
     }
 
-    if (Osoba::sprawdzLogowanie(login.toStdString(), credential.toStdString())) {
+    if (Osoba::sprawdzPin(login.toStdString(), credential.toStdString())) {
         // sprawdzLogowanie wykryje 4-cyfrowy PIN i zwróci true
         QMessageBox::information(this, "Sukces", "Zalogowano pomyœlnie!");
         if (log) { delete log; log = nullptr; }

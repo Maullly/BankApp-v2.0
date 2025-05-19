@@ -34,7 +34,8 @@ public:
     void zapiszDoPliku() const;
     // Dodanie transakcji do historii
     void dodajTransakcje(const std::string& opis, double stanPrzed, double stanPo);
-    static bool sprawdzLogowanie(const std::string& konto, const std::string& credential);
+    static bool sprawdzHaslo(const std::string& konto, const std::string& password);
+    static bool sprawdzPin(const std::string& konto, const std::string& pin);
 
     // Gettery
     std::string getNumerKonta() const;

@@ -3,6 +3,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlDatabase>
 LastTransactionsWindow::LastTransactionsWindow(QWidget* parent)
 {
 	ui.setupUi(this);
@@ -39,44 +42,34 @@ void LastTransactionsWindow::on_BackButton_clicked()
 }
 
 void LastTransactionsWindow::loadTransactions() {
-    QFile file("./src/transactions.txt");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::warning(this, "B³¹d", "Nie mo¿na otworzyæ pliku z transakcjami!");
+    QSqlQuery query;
+    query.prepare(R"(
+        SELECT u.first_name, u.last_name, t.transaction_date, t.transaction_type,
+               t.balance_before, t.balance_after
+        FROM transactions t
+        JOIN users u ON t.user_id = u.id
+        WHERE t.account_number = :accountNumber
+        ORDER BY t.transaction_date DESC
+    )");
+
+    query.bindValue(":accountNumber", QString::fromStdString(accountNumber));
+
+    if (!query.exec()) {
+        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê wczytaæ transakcji!");
         return;
     }
 
-    QTextStream in(&file);
-    ui.TransactionsTable->setRowCount(0);  // Czyœcimy tabelê przed dodaniem nowych danych
+    ui.TransactionsTable->setRowCount(0);
 
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList parts = line.split(",");
+    while (query.next()) {
+        int row = ui.TransactionsTable->rowCount();
+        ui.TransactionsTable->insertRow(row);
 
-        if (parts.size() >= 7) {  // Teraz mamy 7 kolumn (ostatnia to numer konta)
-            QString numerKontaWPliku = parts[6].trimmed();  // Pobieramy numer konta i usuwamy bia³e znaki
-
-            if (numerKontaWPliku == QString::fromStdString(accountNumber)) { // Sprawdzamy zgodnoœæ konta
-                int row = ui.TransactionsTable->rowCount();
-                ui.TransactionsTable->insertRow(row); // Dodajemy nowy wiersz
-
-                // Tworzymy QTableWidgetItem dla ka¿dej kolumny
-                QTableWidgetItem* imieItem = new QTableWidgetItem(parts[0]);
-                QTableWidgetItem* nazwiskoItem = new QTableWidgetItem(parts[1]);
-                QTableWidgetItem* dataItem = new QTableWidgetItem(parts[2]);
-                QTableWidgetItem* rodzajItem = new QTableWidgetItem(parts[3]);
-                QTableWidgetItem* stanPrzedItem = new QTableWidgetItem(parts[4]);
-                QTableWidgetItem* stanPoItem = new QTableWidgetItem(parts[5]);
-
-                // Wstawiamy dane do odpowiednich kolumn
-                ui.TransactionsTable->setItem(row, 0, imieItem);
-                ui.TransactionsTable->setItem(row, 1, nazwiskoItem);
-                ui.TransactionsTable->setItem(row, 2, dataItem);
-                ui.TransactionsTable->setItem(row, 3, rodzajItem);
-                ui.TransactionsTable->setItem(row, 4, stanPrzedItem);
-                ui.TransactionsTable->setItem(row, 5, stanPoItem);
-            }
-        }
+        ui.TransactionsTable->setItem(row, 0, new QTableWidgetItem(query.value(0).toString())); // imiê
+        ui.TransactionsTable->setItem(row, 1, new QTableWidgetItem(query.value(1).toString())); // nazwisko
+        ui.TransactionsTable->setItem(row, 2, new QTableWidgetItem(query.value(2).toString())); // data
+        ui.TransactionsTable->setItem(row, 3, new QTableWidgetItem(query.value(3).toString())); // typ
+        ui.TransactionsTable->setItem(row, 4, new QTableWidgetItem(QString::number(query.value(4).toDouble(), 'f', 2))); // saldo przed
+        ui.TransactionsTable->setItem(row, 5, new QTableWidgetItem(QString::number(query.value(5).toDouble(), 'f', 2))); // saldo po
     }
-
-    file.close();
 }

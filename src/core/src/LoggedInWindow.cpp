@@ -117,23 +117,23 @@ void LoggedInWindow::on_LogOutButton_clicked()
 }
 void LoggedInWindow::refreshBalance()
 {
-	if (!bal) return; // Jeœli okno nie zosta³o jeszcze utworzone, nie rób nic
+	if (!bal) return;
 
-	QFile file("./src/login.txt");
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::critical(this, "B³¹d", "Nie mo¿na otworzyæ pliku!");
+	QSqlQuery query;
+	query.prepare("SELECT balance FROM users WHERE id = :id");
+	query.bindValue(":id", QString::fromStdString(accountNumber));
+
+	if (!query.exec()) {
+		QMessageBox::critical(this, "B³¹d", "B³¹d zapytania SQL: " + query.lastError().text());
 		return;
 	}
 
-	QTextStream in(&file);
-	while (!in.atEnd()) {
-		QString line = in.readLine();
-		QStringList parts = line.split(",");
-		if (parts.size() >= 11 && parts[0].toStdString() == accountNumber) {
-			bal->setBalanceText(parts[10]);  // Nowa metoda do aktualizacji labelki
-			break;
-		}
+	if (query.next()) {
+		double balance = query.value("balance").toDouble();
+		bal->setBalanceText(QString::number(balance, 'f', 2));
 	}
-	file.close();
+	else {
+		QMessageBox::warning(this, "B³¹d", "Nie znaleziono konta.");
+	}
 }
 

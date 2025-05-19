@@ -3,7 +3,11 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QFile>
-
+#include <QTextStream>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlDriver>
 AccountBalanceWindow::AccountBalanceWindow(QWidget* parent)
 {
 	ui.setupUi(this);
@@ -16,25 +20,35 @@ AccountBalanceWindow::~AccountBalanceWindow()
 void AccountBalanceWindow::setAccountNumber(std::string accNum)
 {
     accountNumber = accNum;
+    qDebug() << "Ustawiono numer konta:" << QString::fromStdString(accountNumber);
     ui.AccountNameLabel->setText("Numer konta: " + QString::fromStdString(accountNumber));
 
-    // Odczyt salda konta z login.txt
-    QFile file("./src/login.txt");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, "B³¹d", "Nie mo¿na otworzyæ pliku!");
+    if (!QSqlDatabase::database().isOpen()) {
+        QMessageBox::critical(this, "B³¹d", "Brak po³¹czenia z baz¹ danych!");
         return;
     }
 
-    QTextStream in(&file);
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        QStringList parts = line.split(",");
-        if (parts.size() >= 11 && parts[0].toStdString() == accountNumber) {
-            ui.BalanceLabel->setText("Stan konta: " + parts[10] + " PLN");
-        }
+    QSqlQuery query;
+    query.prepare("SELECT balance FROM users WHERE id = :id");
+    query.bindValue(":id", QString::fromStdString(accountNumber).trimmed());
+
+    if (!query.exec()) {
+        qDebug() << "B³¹d zapytania SQL:" << query.lastError().text();
+        QMessageBox::critical(this, "B³¹d", "B³¹d zapytania SQL: " + query.lastError().text());
+        return;
     }
-    file.close();
+
+    if (query.next()) {
+        double balance = query.value("balance").toDouble();
+        qDebug() << "Saldo konta:" << balance;
+        ui.BalanceLabel->setText("Stan konta: " + QString::number(balance, 'f', 2) + " PLN");
+    }
+    else {
+        QMessageBox::warning(this, "B³¹d", "Nie znaleziono konta o podanym numerze.");
+    }
 }
+
+
 void AccountBalanceWindow::setBalanceText(QString balance)
 {
     ui.BalanceLabel->setText("Stan konta: " + balance + " PLN");

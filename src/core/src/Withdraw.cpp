@@ -27,30 +27,27 @@ void WithdrawWindow::on_WithdrawButton_clicked()
 {
     double amount = ui.WithdrawEdit->text().toDouble();
     if (amount <= 0) {
-        QMessageBox::warning(this, "Blad", "Kwota musi byc wieksza od zera!");
+        QMessageBox::warning(this, "B³¹d", "Kwota musi byæ wiêksza od zera!");
         return;
     }
 
-    QSqlQuery selectQuery;
-    selectQuery.prepare("SELECT * FROM users WHERE id = :id");
-    selectQuery.bindValue(":id", QString::fromStdString(accountNumber));
+    QSqlQuery query;
+    query.prepare("SELECT * FROM users WHERE id = :id");
+    query.bindValue(":id", QString::fromStdString(accountNumber));
 
-    if (!selectQuery.exec() || !selectQuery.next()) {
+    if (!query.exec() || !query.next()) {
         QMessageBox::critical(this, "B³¹d", "Nie znaleziono konta!");
         return;
     }
 
-    double balanceBefore = selectQuery.value("balance").toDouble();
-    QString imie = selectQuery.value("first_name").toString();
-    QString nazwisko = selectQuery.value("last_name").toString();
-    double balanceAfter = balanceBefore - amount;
-
-    if (balanceAfter < 0) {
-        QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki!");
+    double balanceBefore = query.value("balance").toDouble();
+    if (balanceBefore < amount) {
+        QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki na koncie!");
         return;
     }
 
-    // Aktualizacja stanu konta
+    double balanceAfter = balanceBefore - amount;
+
     QSqlQuery updateQuery;
     updateQuery.prepare("UPDATE users SET balance = :balance WHERE id = :id");
     updateQuery.bindValue(":balance", balanceAfter);
@@ -61,30 +58,31 @@ void WithdrawWindow::on_WithdrawButton_clicked()
         return;
     }
 
-    // Pe³ne utworzenie obiektu Osoba
+    // Utwórz obiekt Osoba
     Osoba osoba(
-        selectQuery.value("id").toString().toStdString(),
-        std::to_string(selectQuery.value("pin").toInt()),
-        selectQuery.value("password").toString().toStdString(),
-        imie.toStdString(),
-        nazwisko.toStdString(),
-        selectQuery.value("birth_date").toString().toStdString(),
-        selectQuery.value("email").toString().toStdString(),
-        selectQuery.value("city").toString().toStdString(),
-        selectQuery.value("postal_code").toString().toStdString(),
-        selectQuery.value("street").toString().toStdString(),
-        selectQuery.value("house_number").toString().toStdString(),
+        query.value("id").toString().toStdString(),
+        query.value("password").toString().toStdString(),
+        query.value("pin").toString().toStdString(),
+        query.value("first_name").toString().toStdString(),
+        query.value("last_name").toString().toStdString(),
+        query.value("birth_date").toString().toStdString(),
+        query.value("email").toString().toStdString(),
+        query.value("city").toString().toStdString(),
+        query.value("postal_code").toString().toStdString(),
+        query.value("street").toString().toStdString(),
+        query.value("house_number").toString().toStdString(),
         balanceAfter
     );
 
     osoba.dodajTransakcje("Wyp³ata", balanceBefore, balanceAfter);
 
-
     QMessageBox::information(this, "Sukces", "Wyp³ata zakoñczona sukcesem!");
+
     if (main) {
         main->refreshBalance();
     }
 }
+
 
 void WithdrawWindow::on_BackButton_clicked()
 {
