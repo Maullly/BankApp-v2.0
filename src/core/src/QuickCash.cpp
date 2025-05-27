@@ -38,7 +38,7 @@ void QuickCashWindow::processWithdrawal(double amount)
 
     QSqlDatabase db = QSqlDatabase::database();
     if (!db.isOpen()) {
-        QMessageBox::critical(this, "B³¹d", "Baza danych nie jest otwarta!");
+        QMessageBox::critical(this, "Blad", "Baza danych nie jest otwarta!");
         return;
     }
 
@@ -53,7 +53,7 @@ void QuickCashWindow::processWithdrawal(double amount)
         balanceBefore = query.value("balance").toDouble();
 
         if (balanceBefore < amount) {
-            QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki na koncie!");
+            QMessageBox::warning(this, "Blad", "Niewystarczajace srodki na koncie!");
             return;
         }
 
@@ -65,7 +65,7 @@ void QuickCashWindow::processWithdrawal(double amount)
         updateQuery.bindValue(":balance", balanceAfter);
         updateQuery.bindValue(":id", QString::fromStdString(accountNumber));
         if (!updateQuery.exec()) {
-            QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ stanu konta!");
+            QMessageBox::critical(this, "Blad", "Nie udalo siê zaktualizowac stanu konta!");
             return;
         }
 
@@ -85,12 +85,12 @@ void QuickCashWindow::processWithdrawal(double amount)
             balanceAfter // nowy stan konta
         );
 
-        osoba.dodajTransakcje("Szybka wyp³ata", balanceBefore, balanceAfter);
+        osoba.dodajTransakcje("Szybka wyplata", balanceBefore, balanceAfter);
 
-        QMessageBox::information(this, "Sukces", "Wyp³ata zakoñczona sukcesem!");
+        QMessageBox::information(this, "Sukces", "Wyplata zakonczona sukcesem!");
     }
     else {
-        QMessageBox::critical(this, "B³¹d", "Nie znaleziono u¿ytkownika!");
+        QMessageBox::critical(this, "Blad", "Nie znaleziono uzytkownika!");
     }
 }
 

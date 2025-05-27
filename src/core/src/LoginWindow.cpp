@@ -9,7 +9,6 @@ LoginWindow::LoginWindow(QWidget* parent)
    : QWidget(parent)  
 {  
    ui.setupUi(this);  
-   // Corrected the issue by replacing QTextEdit with QLineEdit for PasswordEdit  
    ui.PasswordEdit->setEchoMode(QLineEdit::Password);  
 
    connect(ui.BackButton, &QPushButton::clicked, this, &LoginWindow::on_BackButton_clicked);  
@@ -33,12 +32,12 @@ void LoginWindow::on_LogIntoButton_clicked()
 
 
    if (login.isEmpty() || credential.isEmpty()) {  
-       QMessageBox::warning(this, "B³¹d", "Wszystkie pola musz¹ byæ wype³nione!");  
+       QMessageBox::warning(this, "Blad", "Wszystkie pola musza byc wypelnione!");  
        return;  
    }  
 
    if (Osoba::sprawdzHaslo(login.toStdString(), credential.toStdString())) {
-       QMessageBox::information(this, "Sukces", "Zalogowano pomyœlnie!");  
+       QMessageBox::information(this, "Sukces", "Zalogowano pomyslnie!");  
        if (log) { delete log; log = nullptr; }  
 
        auto w = new LoggedInWindow();  
@@ -48,7 +47,7 @@ void LoginWindow::on_LogIntoButton_clicked()
        close();  
    }  
    else {  
-       QMessageBox::warning(this, "B³¹d", "Niepoprawne dane logowania!");  
+       QMessageBox::warning(this, "Blad", "Niepoprawne dane logowania!");  
    }  
 }  
 

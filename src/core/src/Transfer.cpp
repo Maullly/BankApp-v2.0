@@ -71,7 +71,7 @@ void TransferWindow::on_TransferButton_clicked()
     updateSender.bindValue(":id", QString::fromStdString(accountNumber));
     if (!updateSender.exec()) {
         QSqlDatabase::database().rollback();
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda nadawcy!");
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zaktualizowac salda nadawcy!");
         return;
     }
 
@@ -82,7 +82,7 @@ void TransferWindow::on_TransferButton_clicked()
     updateRecipient.bindValue(":id", recipientAccount);
     if (!updateRecipient.exec()) {
         QSqlDatabase::database().rollback();
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda odbiorcy!");
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zaktualizowac salda odbiorcy!");
         return;
     }
 
@@ -123,7 +123,7 @@ void TransferWindow::on_TransferButton_clicked()
     );
     recipient.dodajTransakcje("Przelew - otrzymano", recipientBalanceBefore, recipientBalanceAfter);
 
-    QMessageBox::information(this, "Sukces", "Przelew wykonany pomyœlnie!");
+    QMessageBox::information(this, "Sukces", "Przelew wykonany pomyslnie!");
 
     if (main) {
         main->refreshBalance();

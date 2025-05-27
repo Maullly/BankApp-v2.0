@@ -72,7 +72,7 @@ void DepositBankomat::onDepositClicked()
 {
     double amount = ui.DepositEdit->text().toDouble();
     if (amount <= 0) {
-        QMessageBox::warning(this, "B³¹d", "Kwota musi byæ wiêksza od zera!");
+        QMessageBox::warning(this, "Blad", "Kwota musi byc wieksza od zera!");
         return;
     }
 
@@ -80,7 +80,7 @@ void DepositBankomat::onDepositClicked()
     query.prepare("SELECT * FROM users WHERE id = :id");
     query.bindValue(":id", QString::fromStdString(accountNumber));
     if (!query.exec() || !query.next()) {
-        QMessageBox::critical(this, "B³¹d", "Nie znaleziono konta!");
+        QMessageBox::critical(this, "Blad", "Nie znaleziono konta!");
         return;
     }
 
@@ -92,7 +92,7 @@ void DepositBankomat::onDepositClicked()
     updateQuery.bindValue(":balance", balanceAfter);
     updateQuery.bindValue(":id", QString::fromStdString(accountNumber));
     if (!updateQuery.exec()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda!");
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zaktualizowac salda!");
         return;
     }
 
@@ -112,8 +112,8 @@ void DepositBankomat::onDepositClicked()
         balanceAfter
     );
 
-    osoba.dodajTransakcje("Wp³ata", balanceBefore, balanceAfter);
-    QMessageBox::information(this, "Sukces", "Wp³ata zakoñczona sukcesem!");
+    osoba.dodajTransakcje("Wplata", balanceBefore, balanceAfter);
+    QMessageBox::information(this, "Sukces", "Wplata zakonczona sukcesem!");
 
     if (main) {
         main->show();

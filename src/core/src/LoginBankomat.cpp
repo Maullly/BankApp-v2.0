@@ -74,13 +74,13 @@ void LoginBankomat::onLoginClicked()
 
 
     if (login.isEmpty() || credential.isEmpty()) {
-        QMessageBox::warning(this, "B³¹d", "Wszystkie pola musz¹ byæ wype³nione!");
+        QMessageBox::warning(this, "Blad", "Wszystkie pola musza byc wypelnione!");
         return;
     }
 
     if (Osoba::sprawdzPin(login.toStdString(), credential.toStdString())) {
         // sprawdzLogowanie wykryje 4-cyfrowy PIN i zwróci true
-        QMessageBox::information(this, "Sukces", "Zalogowano pomyœlnie!");
+        QMessageBox::information(this, "Sukces", "Zalogowano pomyslnie!");
         if (log) { delete log; log = nullptr; }
 
         auto atm = new BankomatLoggedIn();
@@ -90,7 +90,7 @@ void LoginBankomat::onLoginClicked()
         close();
     }
     else {
-        QMessageBox::warning(this, "B³¹d", "Niepoprawne dane logowania!");
+        QMessageBox::warning(this, "Blad", "Niepoprawne dane logowania!");
     }
 }
 

@@ -70,7 +70,7 @@ void DepositWindow::on_DepositButton_clicked()
         balanceAfter
     );
 
-    osoba.dodajTransakcje("Wp³ata", balanceBefore, balanceAfter);
+    osoba.dodajTransakcje("Wplata", balanceBefore, balanceAfter);
 
     QMessageBox::information(this, "Sukces", "Wp³ata zakoñczona sukcesem!");
 

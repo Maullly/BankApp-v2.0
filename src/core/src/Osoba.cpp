@@ -84,20 +84,19 @@ void Osoba::dodajTransakcje(const std::string& opis, double stanPrzed, double st
     }
 
     QSqlQuery insert;
-    QString currentDate = QDate::currentDate().toString("dd-MM-yyyy");
+    QString currentDate = QDate::currentDate().toString("yyyy-MM-dd");
 
     insert.prepare(R"(
-        INSERT INTO transactions (imie, nazwisko, data, rodzaj, balans_przed, balans_po, numer_konta)
-        VALUES (:imie, :nazwisko, :data, :rodzaj, :balans_przed, :balans_po, :numer_konta)
+        INSERT INTO transactions (user_id, transaction_date, transaction_type, balance_before, balance_after, account_number)
+        VALUES (:user_id, :transaction_date, :transaction_type, :balance_before, :balance_after, :account_number)
     )");
 
-    insert.bindValue(":imie", QString::fromStdString(imie));
-    insert.bindValue(":nazwisko", QString::fromStdString(nazwisko));
-    insert.bindValue(":data", currentDate);
-    insert.bindValue(":rodzaj", QString::fromStdString(opis));
-    insert.bindValue(":balans_przed", stanPrzed);
-    insert.bindValue(":balans_po", stanPo);
-    insert.bindValue(":numer_konta", QString::fromStdString(numerKonta));
+    insert.bindValue(":user_id", QString::fromStdString(numerKonta)); 
+    insert.bindValue(":transaction_date", currentDate);
+    insert.bindValue(":transaction_type", QString::fromStdString(opis));
+    insert.bindValue(":balance_before", stanPrzed);
+    insert.bindValue(":balance_after", stanPo);
+    insert.bindValue(":account_number", QString::fromStdString(numerKonta));
 
     if (!insert.exec()) {
         qDebug() << "Błąd zapisu transakcji:" << insert.lastError().text();
@@ -106,6 +105,7 @@ void Osoba::dodajTransakcje(const std::string& opis, double stanPrzed, double st
         qDebug() << "Transakcja zapisana pomyślnie.";
     }
 }
+
 bool Osoba::sprawdzHaslo(const std::string& konto, const std::string& password)
 {
     QSqlQuery query;
