@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QTextStream>
+#include <QInputDialog>
 
 TransferWindow::TransferWindow(QWidget* parent)
 {
@@ -29,6 +30,28 @@ void TransferWindow::on_TransferButton_clicked()
 
     if (recipientAccount.isEmpty() || amount <= 0) {
         QMessageBox::warning(this, "B³¹d", "Wprowadz poprawny numer i kwote!");
+        return;
+    }
+    // Krok 1: Autoryzacja has³em
+    bool ok;
+    QString inputPassword = QInputDialog::getText(this, "Autoryzacja", "WprowadŸ has³o:", QLineEdit::Password, "", &ok);
+    if (!ok || inputPassword.isEmpty()) {
+        QMessageBox::warning(this, "Anulowano", "Nie wprowadzono has³a.");
+        return;
+    }
+    if (!Osoba::sprawdzHaslo(accountNumber, inputPassword.toStdString())) {
+        QMessageBox::critical(this, "B³¹d", "Niepoprawne has³o!");
+        return;
+    }
+
+    // Krok 2: Autoryzacja PIN-em
+    QString inputPin = QInputDialog::getText(this, "Autoryzacja", "WprowadŸ PIN:", QLineEdit::Password, "", &ok);
+    if (!ok || inputPin.isEmpty()) {
+        QMessageBox::warning(this, "Anulowano", "Nie wprowadzono PIN-u.");
+        return;
+    }
+    if (!Osoba::sprawdzPin(accountNumber, inputPin.toStdString())) {
+        QMessageBox::critical(this, "B³¹d", "Niepoprawny PIN!");
         return;
     }
 

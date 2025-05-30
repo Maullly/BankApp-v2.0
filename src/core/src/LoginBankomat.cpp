@@ -44,7 +44,7 @@ void LoginBankomat::onNumberClicked()
         ui.AccountEdit->setText(ui.AccountEdit->text() + digit);
     }
     else if (ui.PinEdit->text().length() < 4) {
-        ui.PinEdit->setText(ui.PinEdit->text() + "*");  // Maskujemy wpisywane has³o
+        ui.PinEdit->setText(ui.PinEdit->text() + "•");  // Maskujemy wpisywane has³o
         enteredPin += digit;  // Przechowujemy prawdziwy PIN
     }
 }

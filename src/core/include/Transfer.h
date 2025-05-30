@@ -1,5 +1,6 @@
 #pragma once
 #include <QWidget>
+#include <QString>
 #include "ui_TransferWindow.h"
 class LoggedInWindow;
 class TransferWindow : public QWidget
@@ -16,5 +17,7 @@ private:
 	Ui::TransferWindow ui;
 	LoggedInWindow* main;
 	std::string accountNumber;
+	QString enteredPassword;
+	QString enteredPin;
 };
 
