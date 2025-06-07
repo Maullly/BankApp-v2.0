@@ -22,6 +22,7 @@ void BankApp::on_LoginButton_clicked()
         loginWindow = new LoginWindow();
         loginWindow->setLog(this);  // Przekazanie wskaŸnika do g³ównego okna
     }
+	loginWindow->setAdminMode(false);  // Ustawienie trybu logowania jako u¿ytkownik
     loginWindow->show();  // Poka¿ okno LoggedInWindow
     close();
 }
@@ -57,6 +58,8 @@ void BankApp::on_LoginBankomatButton_clicked()
 
 void BankApp::on_AdminLoginButton_clicked()
 {
+
+    /*
     qDebug() << "Admin button clicked";
 
     // Œcie¿ka wzglêdna do AdminPanel.exe
@@ -74,4 +77,14 @@ void BankApp::on_AdminLoginButton_clicked()
         qDebug() << "Nie znaleziono AdminPanel.exe pod œcie¿k¹:" << adminExePath;
         QMessageBox::warning(this, "B³¹d", "Nie znaleziono pliku AdminPanel.exe!");
     }
+    */
+    qDebug() << "Admin button clicked";
+
+    if (!loginWindow) {
+        loginWindow = new LoginWindow();
+        loginWindow->setLog(this);
+    }
+    loginWindow->setAdminMode(true); // ustaw tryb admina
+    loginWindow->show();
+    close();
 }

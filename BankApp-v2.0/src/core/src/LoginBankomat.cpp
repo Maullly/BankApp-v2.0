@@ -80,6 +80,10 @@ void LoginBankomat::onLoginClicked()
 
     if (Osoba::sprawdzPin(login.toStdString(), credential.toStdString())) {
         // sprawdzLogowanie wykryje 4-cyfrowy PIN i zwróci true
+        if (!Osoba::czyZweryfikowany(login.toStdString())) {
+            QMessageBox::warning(this, "B³¹d", "U¿ytkownik nie zosta³ jeszcze zweryfikowany.");
+            return;
+        }
         QMessageBox::information(this, "Sukces", "Zalogowano pomyslnie!");
         if (log) { delete log; log = nullptr; }
 

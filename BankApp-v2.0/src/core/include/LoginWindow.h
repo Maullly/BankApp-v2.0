@@ -15,9 +15,12 @@ public:
 	void setLog(BankApp* mainApp);
 	void on_LogIntoButton_clicked();
 	void on_BackButton_clicked();
+	void setAdminMode(bool mode);
 
 private:
     Ui::LoginWindow ui;
 	BankApp* main;
 	LoggedInWindow* log;
+	bool adminMode = false;
+
 };

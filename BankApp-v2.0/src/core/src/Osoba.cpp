@@ -142,6 +142,43 @@ bool Osoba::sprawdzPin(const std::string& konto, const std::string& pin)
 
     return false;
 }
+bool Osoba::czyAdmin(const std::string& konto)
+{
+    QSqlQuery query;
+    query.prepare("SELECT is_admin FROM users WHERE id = :id");
+    query.bindValue(":id", QString::fromStdString(konto));
+
+    if (!query.exec()) {
+        qDebug() << "Błąd zapytania admina: " << query.lastError().text();
+        return false;
+    }
+
+    if (query.next()) {
+        int isAdmin = query.value("is_admin").toInt();
+        return isAdmin == 1;
+    }
+
+    return false;
+}
+bool Osoba::czyZweryfikowany(const std::string& konto)
+{
+    QSqlQuery query;
+    query.prepare("SELECT verified FROM users WHERE id = :id");
+    query.bindValue(":id", QString::fromStdString(konto));
+
+    if (!query.exec()) {
+        qDebug() << "Błąd zapytania verified: " << query.lastError().text();
+        return false;
+    }
+
+    if (query.next()) {
+        return query.value("verified").toInt() == 1;
+    }
+
+    return false;
+}
+
+
 std::string Osoba::generujNoweId()
 {
     QSqlDatabase db = QSqlDatabase::database();

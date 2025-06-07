@@ -8,7 +8,7 @@
 #include <QDebug>
 #include <QCoreApplication>
 
-void createDatabase() {
+static void createDatabase() {
     qDebug() << "Dostêpne sterowniki SQL:" << QSqlDatabase::drivers();
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
@@ -41,7 +41,9 @@ void createDatabase() {
             postal_code TEXT NOT NULL,
             street TEXT NOT NULL,
             house_number TEXT NOT NULL,
-            balance REAL NOT NULL DEFAULT 0 CHECK (balance >= 0)
+            balance REAL NOT NULL DEFAULT 0 CHECK (balance >= 0),
+            is_admin INTEGER NOT NULL DEFAULT 0 CHECK (is_admin IN (0, 1)),
+            verified INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1))
         );
     )";
 

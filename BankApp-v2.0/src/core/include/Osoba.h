@@ -30,8 +30,6 @@ public:
         const std::string& nazwisko, const std::string& dataUrodzenia, const std::string& email,
         const std::string& miasto, const std::string& kodPocztowy, const std::string& ulica,
         const std::string& numerDomu, double stanKonta = 0.0);
-    // Zapisz dane do pliku
-    void zapiszDoPliku() const;
     // Dodanie transakcji do historii
     void dodajTransakcje(const std::string& opis, double stanPrzed, double stanPo);
     static bool sprawdzHaslo(const std::string& konto, const std::string& password);
@@ -58,6 +56,8 @@ public:
     // Bool
     bool wyplacSrodki(double kwota);
     bool dodajDoBazy();
+    static bool czyAdmin(const std::string& konto);
+    static bool czyZweryfikowany(const std::string& konto);
 
     static std::string generujNoweId();
 };

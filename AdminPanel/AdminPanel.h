@@ -8,12 +8,12 @@ public:
 	AdminPanel(QWidget* parent = nullptr);
 	~AdminPanel();
 	void loadAccounts();
-	void deleteAccount();
 	void changePin();
 	void setLog(BankApp* mainApp);
 	void on_LogOutButton_clicked();
 	void changePassword();
 	void acceptAccount();
+	void initDatabase();
 private:
 	Ui::AdminWindow ui;
 	BankApp* main;

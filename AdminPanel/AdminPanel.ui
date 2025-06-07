@@ -47,85 +47,6 @@
     <set>Qt::AlignmentFlag::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QTableWidget" name="AdminWidget">
-   <property name="geometry">
-    <rect>
-     <x>-5</x>
-     <y>131</y>
-     <width>841</width>
-     <height>331</height>
-    </rect>
-   </property>
-   <attribute name="horizontalHeaderDefaultSectionSize">
-    <number>139</number>
-   </attribute>
-   <column>
-    <property name="text">
-     <string>Numer Konta</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Imie</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Nazwisko</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Data Urodzenia</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Adres Email</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Zatwierdzenie</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-  </widget>
   <widget class="QPushButton" name="ChangePinAdminButton">
    <property name="geometry">
     <rect>
@@ -200,6 +121,35 @@
    </property>
    <property name="text">
     <string>Zmień hasło</string>
+   </property>
+  </widget>
+  <widget class="QTableView" name="AdminView">
+   <property name="geometry">
+    <rect>
+     <x>-5</x>
+     <y>131</y>
+     <width>841</width>
+     <height>331</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="RefreshButton">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>470</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Odśwież</string>
    </property>
   </widget>
  </widget>
