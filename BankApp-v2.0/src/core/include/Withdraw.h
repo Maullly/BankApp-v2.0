@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "ui_WithdrawWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_WithdrawWindow.h"
 #include <QMessageBox>
 
 class LoggedInWindow;

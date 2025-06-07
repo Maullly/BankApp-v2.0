@@ -2,7 +2,7 @@
 
 #include <QWidget>
 
-#include "ui_SignUpWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_SignUpWindow.h"
 class BankApp;
 class AdminPanel;
 class SignUpWindow : public QWidget

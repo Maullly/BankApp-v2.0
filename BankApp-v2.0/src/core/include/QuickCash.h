@@ -1,7 +1,7 @@
 #pragma once
 #include <QWidget>
 #include <QMessageBox>
-#include "ui_QuickCashWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_QuickCashWindow.h"
 class BankomatLoggedIn;
 class QuickCashWindow : public QWidget
 {

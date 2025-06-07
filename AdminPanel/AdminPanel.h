@@ -1,5 +1,5 @@
 #pragma once
-#include "ui_AdminPanelWindow.h"
+#include "./x64/Debug/qt/uic/ui_AdminPanel.h"
 class BankApp;
 class AdminPanel : public QWidget
 {
@@ -12,6 +12,8 @@ public:
 	void changePin();
 	void setLog(BankApp* mainApp);
 	void on_LogOutButton_clicked();
+	void changePassword();
+	void acceptAccount();
 private:
 	Ui::AdminWindow ui;
 	BankApp* main;

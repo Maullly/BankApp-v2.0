@@ -72,17 +72,6 @@
    </column>
    <column>
     <property name="text">
-     <string>Numer Pin</string>
-    </property>
-    <property name="font">
-     <font>
-      <family>Calibri</family>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>Imie</string>
     </property>
     <property name="font">
@@ -125,13 +114,24 @@
      </font>
     </property>
    </column>
+   <column>
+    <property name="text">
+     <string>Zatwierdzenie</string>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+   </column>
   </widget>
   <widget class="QPushButton" name="ChangePinAdminButton">
    <property name="geometry">
     <rect>
-     <x>200</x>
+     <x>190</x>
      <y>470</y>
-     <width>101</width>
+     <width>111</width>
      <height>61</height>
     </rect>
    </property>
@@ -145,31 +145,31 @@
     <string>Zmień pin</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="DeleteAccAdminButton">
+  <widget class="QPushButton" name="AcceptAccAdminButton">
    <property name="geometry">
     <rect>
-     <x>530</x>
+     <x>330</x>
      <y>470</y>
-     <width>121</width>
+     <width>131</width>
      <height>61</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Calibri</family>
-     <pointsize>16</pointsize>
+     <pointsize>14</pointsize>
     </font>
    </property>
    <property name="text">
-    <string>Usuń konto</string>
+    <string>Zatwierdź konto</string>
    </property>
   </widget>
   <widget class="QPushButton" name="LogOutAdminButton">
    <property name="geometry">
     <rect>
-     <x>340</x>
+     <x>650</x>
      <y>470</y>
-     <width>151</width>
+     <width>161</width>
      <height>61</height>
     </rect>
    </property>
@@ -181,6 +181,25 @@
    </property>
    <property name="text">
     <string>Wyloguj sie</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="ChangePasswordAdminButton">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>470</y>
+     <width>111</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Calibri</family>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Zmień hasło</string>
    </property>
   </widget>
  </widget>

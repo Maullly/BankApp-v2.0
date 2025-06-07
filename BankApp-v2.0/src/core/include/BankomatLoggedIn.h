@@ -1,6 +1,6 @@
 #pragma once
 #include <QWidget>
-#include "ui_BankomatWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_BankomatWindow.h"
 class BankApp;
 class DepositBankomat;
 class WithdrawBankomatWindow;

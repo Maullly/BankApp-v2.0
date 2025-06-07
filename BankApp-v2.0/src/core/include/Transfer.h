@@ -1,7 +1,7 @@
 #pragma once
 #include <QWidget>
 #include <QString>
-#include "ui_TransferWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_TransferWindow.h"
 class LoggedInWindow;
 class TransferWindow : public QWidget
 {

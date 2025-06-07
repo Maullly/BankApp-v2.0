@@ -1,7 +1,8 @@
 #include "../include/BankApp.h"
 #include <QDebug>
 #include <QMessageBox>
-
+#include <QCoreApplication>
+#include <QDir>
 BankApp::BankApp(QWidget* parent)
     : QMainWindow(parent), loggedInWindow(nullptr), signUpWindow(nullptr)
 {
@@ -57,11 +58,20 @@ void BankApp::on_LoginBankomatButton_clicked()
 void BankApp::on_AdminLoginButton_clicked()
 {
     qDebug() << "Admin button clicked";
-    if (!adminPanel) {
-        adminPanel = new AdminPanel();
-        adminPanel->setLog(this);
-    }
-    adminPanel->show();
-    close();
-}
 
+    // Œcie¿ka wzglêdna do AdminPanel.exe
+    QString adminExePath = QDir::toNativeSeparators(
+        QCoreApplication::applicationDirPath() + "/AdminPanel.exe"
+    );
+
+    qDebug() << "Uruchamiam: " << adminExePath;
+
+    if (QFile::exists(adminExePath)) {
+        QProcess::startDetached(adminExePath);
+        this->close(); 
+    }
+    else {
+        qDebug() << "Nie znaleziono AdminPanel.exe pod œcie¿k¹:" << adminExePath;
+        QMessageBox::warning(this, "B³¹d", "Nie znaleziono pliku AdminPanel.exe!");
+    }
+}

@@ -1,6 +1,6 @@
 #pragma once
 #include <QWidget>
-#include "ui_ChangePinWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_ChangePinWindow.h"
 #include "Osoba.h"
 class LoggedInWindow;
 class PinChangeWindow : public QWidget

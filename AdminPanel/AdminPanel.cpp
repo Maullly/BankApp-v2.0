@@ -1,16 +1,19 @@
-#include "../include/AdminPanel.h"
+#include "AdminPanel.h"
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
 #include <QInputDialog>
-#include "../include/BankApp.h"
+#include "../BankApp-v2.0/src/core/include/BankApp.h"
+#include <QDir>
 AdminPanel::AdminPanel(QWidget* parent)
 {
     ui.setupUi(this);
     loadAccounts(); // Wczytaj konta przy uruchomieniu panelu
-    connect(ui.DeleteAccAdminButton, &QPushButton::clicked, this, &AdminPanel::deleteAccount);
     connect(ui.ChangePinAdminButton, &QPushButton::clicked, this, &AdminPanel::changePin);
+    connect(ui.ChangePasswordAdminButton, &QPushButton::clicked, this, &AdminPanel::changePassword);
     connect(ui.LogOutAdminButton, &QPushButton::clicked, this, &AdminPanel::on_LogOutButton_clicked);
+    connect(ui.AcceptAccAdminButton, &QPushButton::clicked, this, &AdminPanel::acceptAccount);
+
 }
 
 AdminPanel::~AdminPanel()
@@ -150,12 +153,104 @@ void AdminPanel::setLog(BankApp* mainApp)
 
 void AdminPanel::on_LogOutButton_clicked()
 {
-    if (main) {
-        main->show();
-        close();
+    // Uruchom z powrotem BankApp.exe
+    QString bankAppExePath = QDir(QCoreApplication::applicationDirPath()).filePath("BankApp.exe");
+
+    if (QFile::exists(bankAppExePath)) {
+        QProcess::startDetached(bankAppExePath);
     }
-    else
-    {
-        QMessageBox::critical(this, "Error", "Main window not set");
+    else {
+        QMessageBox::warning(this, "B³¹d", "Nie znaleziono BankApp.exe!");
     }
+
+    close(); // Zamknij AdminPanel
+}
+
+void AdminPanel::changePassword()
+{
+    int row = ui.AdminWidget->currentRow();
+    if (row < 0) {
+        QMessageBox::warning(this, "B³¹d", "Wybierz konto do zmiany has³a!");
+        return;
+    }
+
+    QString accountNumber = ui.AdminWidget->item(row, 0)->text();
+    QString newPassword = QInputDialog::getText(this, "Zmiana has³a", "WprowadŸ nowe has³o:");
+
+    if (newPassword.isEmpty()) {
+        QMessageBox::warning(this, "B³¹d", "Has³o nie mo¿e byæ puste!");
+        return;
+    }
+
+    QFile file("./src/login.txt");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "B³¹d", "Nie mo¿na otworzyæ pliku login.txt!");
+        return;
+    }
+
+    QStringList lines;
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList parts = line.split(",");
+        if (parts.size() >= 3 && parts[0] == accountNumber) {
+            parts[6] = newPassword; // Za³ó¿my, ¿e has³o jest w kolumnie 6
+            line = parts.join(",");
+        }
+        lines.append(line);
+    }
+    file.close();
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        QMessageBox::critical(this, "B³¹d", "Nie mo¿na zapisaæ do pliku login.txt!");
+        return;
+    }
+
+    QTextStream out(&file);
+    for (const QString& line : lines)
+        out << line << "\n";
+    file.close();
+
+    QMessageBox::information(this, "Sukces", "Has³o zosta³o zmienione!");
+}
+void AdminPanel::acceptAccount()
+{
+    int row = ui.AdminWidget->currentRow();
+    if (row < 0) {
+        QMessageBox::warning(this, "B³¹d", "Wybierz konto do zatwierdzenia!");
+        return;
+    }
+
+    QString accountNumber = ui.AdminWidget->item(row, 0)->text();
+
+    QFile file("./src/login.txt");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "B³¹d", "Nie mo¿na otworzyæ pliku login.txt!");
+        return;
+    }
+
+    QStringList lines;
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        QStringList parts = line.split(",");
+        if (parts.size() >= 7 && parts[0] == accountNumber) {
+            parts[7] = "true";  // Pole np. "zatwierdzony" na pozycji 7
+            line = parts.join(",");
+        }
+        lines.append(line);
+    }
+    file.close();
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+        QMessageBox::critical(this, "B³¹d", "Nie mo¿na zapisaæ do pliku login.txt!");
+        return;
+    }
+
+    QTextStream out(&file);
+    for (const QString& line : lines)
+        out << line << "\n";
+    file.close();
+
+    QMessageBox::information(this, "Zatwierdzono", "Konto zosta³o zatwierdzone.");
 }

@@ -1,12 +1,13 @@
 #pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_BankMainWindow.h"
+#include "../../../BankApp/x64/Debug/qt/uic/ui_BankMainWindow.h"
 #include "LoginWindow.h"
 #include "SignUpWindow.h"
 #include "LoggedInWindow.h"
 #include "LoginBankomat.h"
-#include "AdminPanel.h"
+#include "../../../../AdminPanel/AdminPanel.h"
+#include <QProcess>
 class BankApp : public QMainWindow
 {
     Q_OBJECT

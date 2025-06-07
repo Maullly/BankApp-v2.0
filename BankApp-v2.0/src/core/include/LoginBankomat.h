@@ -1,7 +1,7 @@
 #pragma once
 #include <QWidget>
 #include <QMessageBox>
-#include "ui_LoginBankomat.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_LoginBankomat.h"
 #include "Osoba.h"
 class BankApp;
 class BankomatLoggedIn;

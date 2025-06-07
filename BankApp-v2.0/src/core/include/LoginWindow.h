@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "ui_LoginWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_LoginWindow.h"
 #include "Osoba.h"
 class BankApp;
 class LoggedInWindow;

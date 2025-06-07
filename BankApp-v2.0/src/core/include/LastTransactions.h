@@ -1,7 +1,7 @@
 #pragma once
 #include <QWidget>
 #include <QMessageBox>
-#include "ui_LastTransactionsWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_LastTransactionsWindow.h"
 class LoggedInWindow;
 class LastTransactionsWindow : public QWidget
 {

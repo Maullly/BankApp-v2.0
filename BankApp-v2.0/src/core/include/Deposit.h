@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QWidget>
-#include "ui_DepositWindow.h"
+#include "..\..\..\BankApp\x64\Debug\qt\uic\ui_DepositWindow.h"
 #include <QMessageBox>
 class LoggedInWindow;
 class DepositWindow : public QWidget

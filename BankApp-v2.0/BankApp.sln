@@ -5,6 +5,8 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BankApp", "BankApp.vcxproj", "{1FFBF2CC-3F7E-4079-8615-097FEB430D4B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AdminPanel", "..\AdminPanel\AdminPanel.vcxproj", "{5B3A21A0-0271-4B23-AC92-49B9FF4E4C84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -15,8 +17,15 @@ Global
 		{1FFBF2CC-3F7E-4079-8615-097FEB430D4B}.Debug|x64.Build.0 = Debug|x64
 		{1FFBF2CC-3F7E-4079-8615-097FEB430D4B}.Release|x64.ActiveCfg = Release|x64
 		{1FFBF2CC-3F7E-4079-8615-097FEB430D4B}.Release|x64.Build.0 = Release|x64
+		{5B3A21A0-0271-4B23-AC92-49B9FF4E4C84}.Debug|x64.ActiveCfg = Debug|x64
+		{5B3A21A0-0271-4B23-AC92-49B9FF4E4C84}.Debug|x64.Build.0 = Debug|x64
+		{5B3A21A0-0271-4B23-AC92-49B9FF4E4C84}.Release|x64.ActiveCfg = Release|x64
+		{5B3A21A0-0271-4B23-AC92-49B9FF4E4C84}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F9F065A-9749-4E27-B61D-50D89D58F8D1}
 	EndGlobalSection
 EndGlobal

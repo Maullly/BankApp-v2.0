@@ -107,7 +107,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="./src/core/src/AdminPanel.cpp" />
     <ClCompile Include="./src/core/src/BankomatLoggedIn.cpp" />
     <ClCompile Include="./src/core/src/DepositBankomat.cpp" />
     <ClCompile Include="./src/core/src/LoginBankomat.cpp" />
@@ -119,7 +118,6 @@
     <ClCompile Include="./src/core/src/Withdraw.cpp" />
     <ClCompile Include="./src/core/src/WithdrawBankomat.cpp" />
     <QtRcc Include="BankApp.qrc" />
-    <QtUic Include="./src/ui/AdminPanelWindow.ui" />
     <QtUic Include="./src/ui/BalanceWindow.ui" />
     <QtUic Include="./src/ui/BankMainWindow.ui" />
     <QtMoc Include="./src/core/include/BankApp.h" />
@@ -164,13 +162,17 @@
     <QtMoc Include="./src/core/include/LoginBankomat.h" />
     <QtMoc Include="./src/core/include/BankomatLoggedIn.h" />
     <QtMoc Include="./src/core/include/DepositBankomat.h" />
-    <QtMoc Include="./src/core/include/AdminPanel.h" />
     <ClInclude Include="./src/core/include/Osoba.h" />
     <QtMoc Include="./src/core/include/Transfer.h" />
     <QtMoc Include="./src/core/include/Withdraw.h" />
     <QtMoc Include="./src/core/include/SignUpWindow.h" />
     <QtMoc Include="./src/core/include/QuickCash.h" />
     <QtMoc Include="./src/core/include/PinChange.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdminPanel\AdminPanel.vcxproj">
+      <Project>{5b3a21a0-0271-4b23-ac92-49b9ff4e4c84}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
