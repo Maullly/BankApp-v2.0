@@ -32,7 +32,7 @@ void QuickCashWindow::setAccountNumber(std::string accNum)
 void QuickCashWindow::processWithdrawal(double amount)
 {
     if (amount <= 0) {
-        QMessageBox::warning(this, "B³¹d", "Kwota musi byæ wiêksza od zera!");
+        QMessageBox::warning(this, "Blad", "Kwota musi byc wieksza od zera!");
         return;
     }
 

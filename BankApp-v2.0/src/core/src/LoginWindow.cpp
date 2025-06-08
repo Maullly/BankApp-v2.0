@@ -37,17 +37,17 @@ void LoginWindow::on_LogIntoButton_clicked()
     QString credential = ui.PasswordEdit->text().trimmed();
 
     if (login.isEmpty() || credential.isEmpty()) {
-        QMessageBox::warning(this, "B³¹d", "Wszystkie pola musz¹ byæ wype³nione!");
+        QMessageBox::warning(this, "Blad", "Wszystkie pola musza byc wypelnione!");
         return;
     }
 
     if (!Osoba::sprawdzHaslo(login.toStdString(), credential.toStdString())) {
-        QMessageBox::warning(this, "B³¹d", "Niepoprawne dane logowania!");
+        QMessageBox::warning(this, "Blad", "Niepoprawne dane logowania!");
         return;
     }
     // Weryfikacja u¿ytkownika
     if (!Osoba::czyZweryfikowany(login.toStdString()) && adminMode == false) {
-        QMessageBox::warning(this, "B³¹d", "U¿ytkownik nie zosta³ jeszcze zweryfikowany.");
+        QMessageBox::warning(this, "Blad", "Uzytkownik nie zostal jeszcze zweryfikowany.");
         return;
     }
     // Sprawdzenie uprawnieñ administratora
@@ -68,12 +68,12 @@ void LoginWindow::on_LogIntoButton_clicked()
             close();
         }
         else {
-            QMessageBox::warning(this, "B³¹d", "Nie znaleziono pliku AdminPanel.exe!");
+            QMessageBox::warning(this, "Blad", "Nie znaleziono pliku AdminPanel.exe!");
         }
     }
     else {
         // Tryb u¿ytkownika - admin te¿ mo¿e siê zalogowaæ jak zwyk³y u¿ytkownik
-        QMessageBox::information(this, "Sukces", "Zalogowano pomyœlnie!");
+        QMessageBox::information(this, "Sukces", "Zalogowano pomyslnie!");
         if (log) { delete log; log = nullptr; }
 
         auto w = new LoggedInWindow();
@@ -93,7 +93,7 @@ void LoginWindow::on_BackButton_clicked()
    }  
    else  
    {  
-       QMessageBox::critical(this, "Error", "Main window not set");  
+       QMessageBox::critical(this, "Blad", "Glowne okno nie zostalo ustawione");  
    }  
 }
 

@@ -7,6 +7,8 @@
 PinChangeWindow::PinChangeWindow(QWidget* parent)
 {
 	ui.setupUi(this);
+    ui.NewPinEdit->setEchoMode(QLineEdit::Password);
+    ui.ConfirmPinEdit->setEchoMode(QLineEdit::Password);
 	connect(ui.BackButton, &QPushButton::clicked, this, &PinChangeWindow::on_BackButton_clicked);
 	connect(ui.ChangePinButton, &QPushButton::clicked, this, &PinChangeWindow::on_ChangePinButton_clicked);
 }
@@ -38,17 +40,17 @@ void PinChangeWindow::on_ChangePinButton_clicked() {
     QString confirmPin = ui.ConfirmPinEdit->text();
 
     if (newPin.isEmpty() || confirmPin.isEmpty()) {
-        QMessageBox::warning(this, "B³¹d", "Wszystkie pola musz¹ byæ wype³nione.");
+        QMessageBox::warning(this, "Blad", "Wszystkie pola musza byc wypelnione.");
         return;
     }
 
     if (newPin != confirmPin) {
-        QMessageBox::warning(this, "B³¹d", "Podane PIN-y nie s¹ zgodne.");
+        QMessageBox::warning(this, "Blad", "Podane PIN-y nie sa zgodne.");
         return;
     }
 
     if (newPin.length() != 4 || newPin.toStdString().find_first_not_of("0123456789") != std::string::npos) {
-        QMessageBox::warning(this, "B³¹d", "PIN musi sk³adaæ siê z 4 cyfr.");
+        QMessageBox::warning(this, "Blad", "PIN musi sk³adac sie z 4 cyfr.");
         return;
     }
 
@@ -58,7 +60,7 @@ void PinChangeWindow::on_ChangePinButton_clicked() {
     selectQuery.bindValue(":id", QString::fromStdString(accountNumber));
 
     if (!selectQuery.exec() || !selectQuery.next()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê znaleŸæ u¿ytkownika.");
+        QMessageBox::critical(this, "Blad", "Nie udalo sie znalezc uzytkownika.");
         return;
     }
 
@@ -69,7 +71,7 @@ void PinChangeWindow::on_ChangePinButton_clicked() {
     updateQuery.bindValue(":id", QString::fromStdString(accountNumber));
 
     if (!updateQuery.exec()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ PIN-u.");
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zaktualizowac PIN-u.");
         return;
     }
 
@@ -91,7 +93,7 @@ void PinChangeWindow::on_ChangePinButton_clicked() {
 
     osoba.setPin(newPin.toStdString());
 
-    QMessageBox::information(this, "Sukces", "PIN zosta³ pomyœlnie zmieniony.");
+    QMessageBox::information(this, "Sukces", "PIN zostal pomyslnie zmieniony.");
 
     ui.NewPinEdit->clear();
     ui.ConfirmPinEdit->clear();

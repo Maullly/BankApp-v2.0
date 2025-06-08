@@ -13,6 +13,7 @@ public:
 	void setAccountNumber(std::string accNum);
 	void on_BackButton_clicked();
 	void loadTransactions();
+	void showEvent(QShowEvent* event);
 private:
 	Ui::LastTransactionsWindow ui;
 	LoggedInWindow* main;

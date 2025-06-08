@@ -34,7 +34,7 @@ void AdminPanel::initDatabase()
     db.setDatabaseName(dbPath);
 
     if (!db.open()) {
-        QMessageBox::critical(nullptr, "B³¹d bazy danych", "Nie mo¿na otworzyæ bazy danych:\n" + db.lastError().text());
+        QMessageBox::critical(nullptr, "Blad bazy danych", "Nie mozna otworzyc bazy danych:\n" + db.lastError().text());
     }
 }
 void AdminPanel::loadAccounts()
@@ -48,7 +48,8 @@ void AdminPanel::loadAccounts()
         "last_name AS 'Nazwisko', "
         "birth_date AS 'Data urodzenia', "
         "email AS 'Email', "
-        "CASE verified WHEN 1 THEN 'TAK' ELSE 'NIE' END AS 'Zatwierdzony' "
+        "CASE verified WHEN 1 THEN 'TAK' ELSE 'NIE' END AS 'Zatwierdzony', "
+		"CASE is_admin WHEN 1 THEN 'TAK' ELSE 'NIE' END AS 'Administrator' "
         "FROM users"
     );
 
@@ -57,7 +58,8 @@ void AdminPanel::loadAccounts()
     }
 
     ui.AdminView->setModel(model);                    
-    ui.AdminView->resizeColumnsToContents();          
+    ui.AdminView->resizeColumnsToContents();      
+    ui.AdminView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void AdminPanel::changePin()
@@ -65,21 +67,21 @@ void AdminPanel::changePin()
     auto model = qobject_cast<QSqlQueryModel*>(ui.AdminView->model());     
     QModelIndex index = ui.AdminView->currentIndex();                      
     if (!index.isValid()) {
-        QMessageBox::warning(this, "B³¹d", "Wybierz konto do zmiany PIN-u!");
+        QMessageBox::warning(this, "Blad", "Wybierz konto do zmiany PIN-u!");
         return;
     }
 
     QString accountNumber = model->data(model->index(index.row(), 0)).toString();
-    QString newPin = QInputDialog::getText(this, "Zmiana PIN", "WprowadŸ nowy PIN:");
+    QString newPin = QInputDialog::getText(this, "Zmiana PIN", "Wprowadz nowy PIN:");
 
     if (newPin.isEmpty()) {
-        QMessageBox::warning(this, "B³¹d", "PIN nie mo¿e byæ pusty!");
+        QMessageBox::warning(this, "Blad", "PIN nie moze byc pusty!");
         return;
     }
 
     QRegularExpression pinRegex("^[0-9]{4}$");
     if (!pinRegex.match(newPin).hasMatch()) {
-        QMessageBox::warning(this, "B³¹d", "PIN musi sk³adaæ siê dok³adnie z 4 cyfr!");
+        QMessageBox::warning(this, "Blad", "PIN musi sk³adac sie dok³adnie z 4 cyfr!");
         return;
     }
 
@@ -89,11 +91,11 @@ void AdminPanel::changePin()
     query.bindValue(":id", accountNumber);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ PIN-u:\n" + query.lastError().text());
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zaktualizowac PIN-u:\n" + query.lastError().text());
         return;
     }
 
-    QMessageBox::information(this, "Sukces", "PIN zosta³ zmieniony!");
+    QMessageBox::information(this, "Sukces", "PIN zostal zmieniony!");
 }
 
 void AdminPanel::changePassword()
@@ -101,15 +103,15 @@ void AdminPanel::changePassword()
     auto model = qobject_cast<QSqlQueryModel*>(ui.AdminView->model());      // <-- ZMIANA
     QModelIndex index = ui.AdminView->currentIndex();                       // <-- ZMIANA
     if (!index.isValid()) {
-        QMessageBox::warning(this, "B³¹d", "Wybierz konto do zmiany has³a!");
+        QMessageBox::warning(this, "Blad", "Wybierz konto do zmiany hasla!");
         return;
     }
 
     QString accountNumber = model->data(model->index(index.row(), 0)).toString();
-    QString newPassword = QInputDialog::getText(this, "Zmiana has³a", "WprowadŸ nowe has³o:");
+    QString newPassword = QInputDialog::getText(this, "Zmiana hasla", "Wprowadz nowe haslo:");
 
     if (newPassword.isEmpty()) {
-        QMessageBox::warning(this, "B³¹d", "Has³o nie mo¿e byæ puste!");
+        QMessageBox::warning(this, "Blad", "Haslo nie moze byc puste!");
         return;
     }
 
@@ -119,35 +121,53 @@ void AdminPanel::changePassword()
     query.bindValue(":id", accountNumber);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ has³a:\n" + query.lastError().text());
+        QMessageBox::critical(this, "Blad", "Nie udalo siê zaktualizowac hasla:\n" + query.lastError().text());
         return;
     }
 
-    QMessageBox::information(this, "Sukces", "Has³o zosta³o zmienione!");
+    QMessageBox::information(this, "Sukces", "Haslo zostalo zmienione!");
 }
 
 void AdminPanel::acceptAccount()
 {
-    auto model = qobject_cast<QSqlQueryModel*>(ui.AdminView->model());      // <-- ZMIANA
-    QModelIndex index = ui.AdminView->currentIndex();                       // <-- ZMIANA
+    auto model = qobject_cast<QSqlQueryModel*>(ui.AdminView->model());
+    QModelIndex index = ui.AdminView->currentIndex();
+
     if (!index.isValid()) {
-        QMessageBox::warning(this, "B³¹d", "Wybierz konto do zatwierdzenia!");
+        QMessageBox::warning(this, "Blad", "Wybierz konto do zatwierdzenia!");
         return;
     }
 
     QString accountNumber = model->data(model->index(index.row(), 0)).toString();
 
+    // Sprawdzenie z bazy danych
+    QSqlQuery checkQuery;
+    checkQuery.prepare("SELECT verified FROM users WHERE id = :id");
+    checkQuery.bindValue(":id", accountNumber);
+
+    if (!checkQuery.exec() || !checkQuery.next()) {
+        QMessageBox::critical(this, "Blad", "Nie udalo sie sprawdzic statusu konta:\n" + checkQuery.lastError().text());
+        return;
+    }
+
+    int verified = checkQuery.value(0).toInt();
+    if (verified == 1) {
+        QMessageBox::information(this, "Informacja", "Konto jest juz zatwierdzone.");
+        return;
+    }
+
+    // Zatwierdzanie
     QSqlQuery query;
     query.prepare("UPDATE users SET verified = 1 WHERE id = :id");
     query.bindValue(":id", accountNumber);
 
     if (!query.exec()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zatwierdziæ konta:\n" + query.lastError().text());
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zatwierdzic konta:\n" + query.lastError().text());
         return;
     }
 
-    QMessageBox::information(this, "Zatwierdzono", "Konto zosta³o zatwierdzone.");
-    loadAccounts(); // Odœwie¿ dane
+    QMessageBox::information(this, "Zatwierdzono", "Konto zostalo zatwierdzone.");
+    loadAccounts();
 }
 
 void AdminPanel::setLog(BankApp* mainApp)
@@ -163,8 +183,13 @@ void AdminPanel::on_LogOutButton_clicked()
         QProcess::startDetached(bankAppExePath);
     }
     else {
-        QMessageBox::warning(this, "B³¹d", "Nie znaleziono BankApp.exe!");
+        QMessageBox::warning(this, "Blad", "Nie znaleziono BankApp.exe!");
     }
 
     close();
+}
+void AdminPanel::showEvent(QShowEvent* event)
+{
+	QWidget::showEvent(event);
+	loadAccounts();  // Za³aduj konta przy ka¿dym otwarciu panelu
 }

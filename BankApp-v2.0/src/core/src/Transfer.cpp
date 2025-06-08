@@ -29,29 +29,29 @@ void TransferWindow::on_TransferButton_clicked()
     double amount = ui.TransferAmountEdit->text().toDouble();
 
     if (recipientAccount.isEmpty() || amount <= 0) {
-        QMessageBox::warning(this, "B³¹d", "Wprowadz poprawny numer i kwote!");
+        QMessageBox::warning(this, "Blad", "Wprowadz poprawny numer i kwote!");
         return;
     }
     // Krok 1: Autoryzacja has³em
     bool ok;
-    QString inputPassword = QInputDialog::getText(this, "Autoryzacja", "WprowadŸ has³o:", QLineEdit::Password, "", &ok);
+    QString inputPassword = QInputDialog::getText(this, "Autoryzacja", "Wprowadz haslo:", QLineEdit::Password, "", &ok);
     if (!ok || inputPassword.isEmpty()) {
-        QMessageBox::warning(this, "Anulowano", "Nie wprowadzono has³a.");
+        QMessageBox::warning(this, "Anulowano", "Nie wprowadzono hasla.");
         return;
     }
     if (!Osoba::sprawdzHaslo(accountNumber, inputPassword.toStdString())) {
-        QMessageBox::critical(this, "B³¹d", "Niepoprawne has³o!");
+        QMessageBox::critical(this, "Blad", "Niepoprawne haslo!");
         return;
     }
 
     // Krok 2: Autoryzacja PIN-em
-    QString inputPin = QInputDialog::getText(this, "Autoryzacja", "WprowadŸ PIN:", QLineEdit::Password, "", &ok);
+    QString inputPin = QInputDialog::getText(this, "Autoryzacja", "Wprowadz PIN:", QLineEdit::Password, "", &ok);
     if (!ok || inputPin.isEmpty()) {
         QMessageBox::warning(this, "Anulowano", "Nie wprowadzono PIN-u.");
         return;
     }
     if (!Osoba::sprawdzPin(accountNumber, inputPin.toStdString())) {
-        QMessageBox::critical(this, "B³¹d", "Niepoprawny PIN!");
+        QMessageBox::critical(this, "Blad", "Niepoprawny PIN!");
         return;
     }
 
@@ -60,13 +60,13 @@ void TransferWindow::on_TransferButton_clicked()
     senderQuery.prepare("SELECT * FROM users WHERE id = :id");
     senderQuery.bindValue(":id", QString::fromStdString(accountNumber));
     if (!senderQuery.exec() || !senderQuery.next()) {
-        QMessageBox::critical(this, "B³¹d", "Nie znaleziono Twojego konta!");
+        QMessageBox::critical(this, "Blad", "Nie znaleziono Twojego konta!");
         return;
     }
 
     double senderBalanceBefore = senderQuery.value("balance").toDouble();
     if (senderBalanceBefore < amount) {
-        QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki!");
+        QMessageBox::warning(this, "Blad", "Niewystarczajace srodki!");
         return;
     }
 
@@ -77,7 +77,7 @@ void TransferWindow::on_TransferButton_clicked()
     recipientQuery.prepare("SELECT * FROM users WHERE id = :id");
     recipientQuery.bindValue(":id", recipientAccount);
     if (!recipientQuery.exec() || !recipientQuery.next()) {
-        QMessageBox::critical(this, "B³¹d", "Konto odbiorcy nie istnieje!");
+        QMessageBox::critical(this, "Blad", "Konto odbiorcy nie istnieje!");
         return;
     }
 
@@ -164,7 +164,7 @@ void TransferWindow::on_BackButton_clicked()
     }
     else
     {
-        QMessageBox::critical(this, "Error", "Main window not set");
+        QMessageBox::critical(this, "Blad", "Glowne okno nie zostalo ustawione");
     }
 }
 

@@ -42,7 +42,7 @@ void WithdrawWindow::on_WithdrawButton_clicked()
 
     double balanceBefore = query.value("balance").toDouble();
     if (balanceBefore < amount) {
-        QMessageBox::warning(this, "Blad", "Niewystarczaj¹ce srodki na koncie!");
+        QMessageBox::warning(this, "Blad", "Niewystarczajace srodki na koncie!");
         return;
     }
 

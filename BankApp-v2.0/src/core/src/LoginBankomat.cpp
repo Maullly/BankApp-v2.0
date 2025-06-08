@@ -6,6 +6,7 @@
 LoginBankomat::LoginBankomat(QWidget* parent)
 {
     ui.setupUi(this);
+    ui.PinEdit->setEchoMode(QLineEdit::Password);
 
     // Po³¹cz przyciski numeryczne z funkcj¹ dodawania cyfr
     connect(ui.ZeroButton, &QPushButton::clicked, this, &LoginBankomat::onNumberClicked);
@@ -44,8 +45,8 @@ void LoginBankomat::onNumberClicked()
         ui.AccountEdit->setText(ui.AccountEdit->text() + digit);
     }
     else if (ui.PinEdit->text().length() < 4) {
-        ui.PinEdit->setText(ui.PinEdit->text() + "•");  // Maskujemy wpisywane has³o
-        enteredPin += digit;  // Przechowujemy prawdziwy PIN
+        ui.PinEdit->setText(ui.PinEdit->text() + digit);
+        enteredPin += digit;
     }
 }
 
@@ -81,7 +82,7 @@ void LoginBankomat::onLoginClicked()
     if (Osoba::sprawdzPin(login.toStdString(), credential.toStdString())) {
         // sprawdzLogowanie wykryje 4-cyfrowy PIN i zwróci true
         if (!Osoba::czyZweryfikowany(login.toStdString())) {
-            QMessageBox::warning(this, "B³¹d", "U¿ytkownik nie zosta³ jeszcze zweryfikowany.");
+            QMessageBox::warning(this, "Blad", "Uzytkownik nie zostal jeszcze zweryfikowany.");
             return;
         }
         QMessageBox::information(this, "Sukces", "Zalogowano pomyslnie!");

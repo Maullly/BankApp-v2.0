@@ -8,6 +8,8 @@ SignUpWindow::SignUpWindow(QWidget* parent)
 	: QWidget(parent)
 {
 	ui.setupUi(this);
+	ui.PasswordEdit->setEchoMode(QLineEdit::Password);
+	ui.PinEdit->setEchoMode(QLineEdit::Password);
 	connect(ui.BackButton, &QPushButton::clicked, this, &SignUpWindow::on_BackButton_clicked);
 	connect(ui.RegistrationButton, &QPushButton::clicked, this, &SignUpWindow::on_RegistrationButton_clicked);
 }
@@ -22,8 +24,8 @@ void SignUpWindow::setLog(BankApp* mainApp)
 void SignUpWindow::on_RegistrationButton_clicked()
 {
 
-	QString password = ui.PasswordEdit->toPlainText();
-	QString pin = ui.PinEdit->toPlainText();
+	QString password = ui.PasswordEdit->text().trimmed();
+	QString pin = ui.PinEdit->text().trimmed();
 	QString imie = ui.NameEdit->toPlainText();
 	QString nazwisko = ui.SurnameEdit->toPlainText();
 	QString dataUrodzenia = ui.dateEdit->text();
@@ -38,12 +40,12 @@ void SignUpWindow::on_RegistrationButton_clicked()
 	}
 	QRegularExpression pinRegex("^[0-9]{1,4}$");
 	if (!pinRegex.match(pin).hasMatch()) {
-		QMessageBox::warning(this, "B³¹d", "PIN mo¿e sk³adaæ siê maksymalnie z 4 cyfr!");
+		QMessageBox::warning(this, "Blad", "PIN moze skladac sie maksymalnie z 4 cyfr!");
 		return;
 	}
 	std::string noweId = Osoba::generujNoweId();
 	if (noweId.empty()) {
-		QMessageBox::critical(this, "B³¹d", "Nie mo¿na wygenerowaæ nowego numeru konta!");
+		QMessageBox::critical(this, "Blad", "Nie mozna wygenerowac nowego numeru konta!");
 		return;
 	}
 	Osoba nowaOsoba(noweId, password.toStdString(), pin.toStdString(), imie.toStdString(),
@@ -51,17 +53,17 @@ void SignUpWindow::on_RegistrationButton_clicked()
 		miasto.toStdString(), kodPocztowy.toStdString(), ulica.toStdString(),
 		numerDomu.toStdString(), 0.0);
 	if (nowaOsoba.dodajDoBazy()) {
-		QMessageBox::information(this, "Sukces", "Rejestracja zakoñczona pomyœlnie!\nNumer konta: " + QString::fromStdString(noweId));
+		QMessageBox::information(this, "Sukces", "Rejestracja zakonczona pomyslnie!\nNumer konta: " + QString::fromStdString(noweId));
 		if (main) {
 			main->show();
 			close();
 		}
 		else {
-			QMessageBox::critical(this, "Error", "Main window not set");
+			QMessageBox::critical(this, "Blad", "Glowne okno nie zostalo ustawione");
 		}
 	}
 	else {
-		QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zapisaæ konta!");
+		QMessageBox::critical(this, "Blad", "Nie udalo siê zapisac konta!");
 	}
 }	
 void SignUpWindow::on_BackButton_clicked()
@@ -72,7 +74,7 @@ void SignUpWindow::on_BackButton_clicked()
 	}
 	else
 	{
-		QMessageBox::critical(this, "Error", "Main window not set");
+		QMessageBox::critical(this, "Blad", "Glowne okno nie zostalo ustawione");
 	}
 }
 

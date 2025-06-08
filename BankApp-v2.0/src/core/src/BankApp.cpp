@@ -58,26 +58,6 @@ void BankApp::on_LoginBankomatButton_clicked()
 
 void BankApp::on_AdminLoginButton_clicked()
 {
-
-    /*
-    qDebug() << "Admin button clicked";
-
-    // Œcie¿ka wzglêdna do AdminPanel.exe
-    QString adminExePath = QDir::toNativeSeparators(
-        QCoreApplication::applicationDirPath() + "/AdminPanel.exe"
-    );
-
-    qDebug() << "Uruchamiam: " << adminExePath;
-
-    if (QFile::exists(adminExePath)) {
-        QProcess::startDetached(adminExePath);
-        this->close(); 
-    }
-    else {
-        qDebug() << "Nie znaleziono AdminPanel.exe pod œcie¿k¹:" << adminExePath;
-        QMessageBox::warning(this, "B³¹d", "Nie znaleziono pliku AdminPanel.exe!");
-    }
-    */
     qDebug() << "Admin button clicked";
 
     if (!loginWindow) {

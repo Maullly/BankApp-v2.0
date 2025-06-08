@@ -73,3 +73,8 @@ void LastTransactionsWindow::loadTransactions() {
         ui.TransactionsTable->setItem(row, 5, new QTableWidgetItem(QString::number(query.value(5).toDouble(), 'f', 2))); // saldo po
     }
 }
+void LastTransactionsWindow::showEvent(QShowEvent* event)
+{
+    QWidget::showEvent(event);
+    loadTransactions();  // Za³aduj transakcje przy ka¿dym otwarciu panelu
+}

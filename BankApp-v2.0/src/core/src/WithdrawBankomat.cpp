@@ -71,7 +71,7 @@ void WithdrawBankomatWindow::onWithdrawClicked()
 {
     double amount = ui.WithdrawEdit->text().toDouble();
     if (amount <= 0) {
-        QMessageBox::warning(this, "B³¹d", "Kwota musi byæ wiêksza od zera!");
+        QMessageBox::warning(this, "Blad", "Kwota musi byc wieksza od zera!");
         return;
     }
 
@@ -80,13 +80,13 @@ void WithdrawBankomatWindow::onWithdrawClicked()
     selectQuery.bindValue(":id", QString::fromStdString(accountNumber));
 
     if (!selectQuery.exec() || !selectQuery.next()) {
-        QMessageBox::critical(this, "B³¹d", "Nie znaleziono konta!");
+        QMessageBox::critical(this, "Blad", "Nie znaleziono konta!");
         return;
     }
 
     double balanceBefore = selectQuery.value("balance").toDouble();
     if (balanceBefore < amount) {
-        QMessageBox::warning(this, "B³¹d", "Niewystarczaj¹ce œrodki na koncie!");
+        QMessageBox::warning(this, "Blad", "Niewystarczajace srodki na koncie!");
         return;
     }
 
@@ -97,7 +97,7 @@ void WithdrawBankomatWindow::onWithdrawClicked()
     updateQuery.bindValue(":balance", balanceAfter);
     updateQuery.bindValue(":id", QString::fromStdString(accountNumber));
     if (!updateQuery.exec()) {
-        QMessageBox::critical(this, "B³¹d", "Nie uda³o siê zaktualizowaæ salda!");
+        QMessageBox::critical(this, "Blad", "Nie udalo sie zaktualizowac salda!");
         return;
     }
 
@@ -118,7 +118,7 @@ void WithdrawBankomatWindow::onWithdrawClicked()
     );
 
     osoba.dodajTransakcje("Wyp³ata", balanceBefore, balanceAfter);
-    QMessageBox::information(this, "Sukces", "Wyp³ata zakoñczona sukcesem!");
+    QMessageBox::information(this, "Sukces", "Wyplata zakonczona sukcesem!");
 }
 
 

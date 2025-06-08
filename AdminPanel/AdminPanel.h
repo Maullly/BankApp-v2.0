@@ -11,6 +11,7 @@ public:
 	void changePin();
 	void setLog(BankApp* mainApp);
 	void on_LogOutButton_clicked();
+	void showEvent(QShowEvent* event);
 	void changePassword();
 	void acceptAccount();
 	void initDatabase();
